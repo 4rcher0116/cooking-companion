@@ -36,7 +36,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
   padding: 20,
-  marginTop: '10vh',
   '&::before': {
     content: '""',
     display: 'flex',
@@ -51,6 +50,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
         'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
     }),
   },
+  width: 'min(500px, 50vw)'
 }));
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
