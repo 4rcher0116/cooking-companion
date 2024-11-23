@@ -1,8 +1,17 @@
 import React from 'react'
+import styles from "./styles/_Account.module.css"
 
 const Account = () => {
   return (
-    <div>Account</div>
+    <div className={styles.accountContainer}>
+      <div className={styles.headerContent}>
+        <div className={styles.headerText}> List of Achievement Collections</div>
+      </div>
+
+      <div> className={styles.body}
+        
+      </div>
+    </div>
   )
 }
 

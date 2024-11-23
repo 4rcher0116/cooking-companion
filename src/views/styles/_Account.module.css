@@ -1,0 +1,15 @@
+.accountContainer{
+    padding-top: 150px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+}
+
+.header{
+    font-size:32px;
+    font-weight: bold;
+    text-align: center;
+    marigin: 40px 0 20px 0;
+}

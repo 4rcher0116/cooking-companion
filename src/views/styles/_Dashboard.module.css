@@ -6,6 +6,12 @@
 
 .headerContent {
     border-bottom: 5px solid black;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+   
 
     .headerText {
         font-size: 5vh;
@@ -76,4 +82,13 @@
     .buttonText {
         color: white;
     }
+}
+
+.iconButtonStyles{
+    height: fit-content;
+    width: fit-content;
+
+    border-radius: 50% !important;
+    border: 2px solid black !important;
+    padding: 3px !important;
 }
