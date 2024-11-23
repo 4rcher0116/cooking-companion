@@ -1,70 +1,178 @@
 .mainBackground {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Prevents overflow of blurred background */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents overflow of blurred background */
 }
-  
+
 .backgroundOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/Images/sampleBG.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(5px);
+  z-index: 0;
+
+  &::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/Images/sampleBG.jpeg');
-    background-size: cover;
-    background-position: center;
-    filter: blur(5px); 
-    z-index: 0;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.14); /* White haze with 14% opacity */
-    }
+    background: rgba(255, 255, 255, 0.14); /* White haze with 14% opacity */
+  }
 }
-  
+
 .allContentContainer {
-    position: relative;
-    z-index: 1; /* Higher z-index to appear above the blurred background */
-    width: 100%;
-    height: 80%;
-    padding: 0 5vw;
-    margin: 5vh 5vw;
-    border-radius: 40px;
-    background-color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1; /* Higher z-index to appear above the blurred background */
+  width: 100%;
+  height: 80%;
+  padding: 0 5vw;
+  margin: 5vh 5vw;
+  border-radius: 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* To ensure rounded corners are visible */
+
+  .leftContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
     justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    overflow: hidden; /* To ensure rounded corners are visible */
 
-    .leftContainer {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-
-        justify-content: space-between;
-
-        padding-top: 5vw;
-    }
+    padding-top: 3vw;
+  }
 }
 
 .animatedText {
-    color: darkred;
-    font-size: 7vh;
-    font-weight: bold;
+  color: darkred;
+  font-size: 7vh;
+  font-weight: bold;
 }
 
-.cursorStyles {
-    font-size: 7vh;
+.cursorStyle {
+  display: none;
+  background-color: black;
+  width: 2px; /* Adjust the thickness */
+  height: 7vh; /* Set height relative to font size */
+  margin-left: 4px; /* Optional: add space between text and cursor */
+  animation: blink 1.2s step-end;
+
+  transform: translateY(-70%);
+}
+
+.mascotContainer {
+  display: flex;
+  height: fit-content;
+  width: fit-content;
+
+  position: relative;
+
+  .speechBubblePrompt {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    transform: translate(100%, -80%);
+    mix-blend-mode: multiply;
+    /* text-align: center; */
+    background-color: #f5f7dc;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 25px 25px #b5d99c;
+    /* font-family: cursive; */
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .speechBubblePrompt::after {
+    transform: translateY(0px);
+    content: ".";
+    font-weight: bold;
+    -webkit-text-fill-color: #f5f7dc;
+    text-shadow: 22px 22px #b5d99c;
+    text-align: left;
+    font-size: 55px;
+    border-radius: 20px;
+    width: 10rem;
+    height: 11px;
+    line-height: 30px;
+    background-color: #f5f7dc;
+    position: absolute;
+    display: block;
+    bottom: -40px;
+    left: 0;
+    box-shadow: 25px 25px #b5d99c;
+    z-index: -2;
+  }
+
+  .speechBubbleTypography {
+    color: #774f38;
+    font-size: 2.5vh;
+  }
+
+  .speechBubbleCursor {
+    display: inline-block;
+    background-color: black;
+    width: 2px; /* Adjust the thickness */
+    height: 2.5rem; /* Set height relative to font size */
+    margin-left: 3px; /* Optional: add space between text and cursor */
+    animation: blink 1.2s step-end infinite;
+
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Media Query Adjustments */
+
+/* For screens wider than 1440px (e.g., 2K resolution) */
+@media (min-width: 1440px) {
+  .mascotContainer {
+    transform: scale(1.2); /* Increase size for larger screens */
+  }
+}
+
+/* For screens between 720px and 1080px (e.g., smaller laptops) */
+@media (max-width: 1080px) and (min-width: 720px) {
+  .mascotContainer {
+    transform: scale(0.9); /* Slightly decrease size */
+  }
+}
+
+/* For screens between 480px and 720px (e.g., tablets in landscape mode) */
+@media (max-width: 720px) and (min-width: 480px) {
+  .mascotContainer {
+    transform: scale(0.8); /* Decrease size further */
+  }
+}
+
+/* For screens smaller than 480px (e.g., mobile phones) */
+@media (max-width: 480px) {
+  .mascotContainer {
+    transform: scale(0.7); /* Reduce size for mobile screens */
+  }
 }

@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../assets/CustomIcons'
+import { GoogleIcon, FacebookIcon } from '../../assets/CustomIcons'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -109,7 +109,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       <CssBaseline enableColorScheme />
       <SignInContainer direction="row" justifyContent="flex-end">
         <Card variant="outlined" id='Card'>
-          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
