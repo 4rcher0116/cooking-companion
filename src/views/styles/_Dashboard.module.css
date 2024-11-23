@@ -47,10 +47,18 @@
 }
 
 .modalContent{
-    width: 100%;
-    height: 100%;
-
-    position:relative;
+    height: 100vh;
+    width: 100vw;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .contentContainer {
+        position:relative;
+        height: 75vh;
+        width: 75vw;
+    }
 }
 
 .closeButton{
@@ -59,5 +67,10 @@
     right: 0;
 
     z-index: 1000000;
-    transform: translate(0, -100%);
+
+    transform: translateY(-100%);
+
+    .buttonText {
+        color: white;
+    }
 }
