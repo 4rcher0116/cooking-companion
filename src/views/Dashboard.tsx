@@ -8,7 +8,9 @@ const Dashboard = () => {
         <p className={styles.headerText}>Cooking Companion</p>
       </div>
       <div className={styles.body}>
-        <div className={styles.recipeDashboardContainer}>Recipe Dash Placeholder</div>
+        <div className={styles.recipeDashboardContainer}>
+          Recipe Dash Placeholder
+        </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
             Animated Character Placeholder

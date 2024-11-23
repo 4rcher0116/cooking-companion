@@ -1,11 +1,11 @@
 .dashboardContent {
-    background-color: lightblue;
+    background-color: white;
     height: 100vh;
     width: 100vw;
 }
 
 .headerContent {
-    border-bottom: 1px solid darkgrey;
+    border-bottom: 5px solid black;
 
     .headerText {
         font-size: 3vh;
@@ -28,7 +28,7 @@
         height: 100%;
         width: 60%;
 
-        border-right: 1px solid darkgray;
+        border-right: 5px solid darkgray;
     }
 
     .rightContainer {
@@ -42,6 +42,6 @@
     .animatedCharacterContainer {
         height: 50%;
 
-        border-bottom: 1px solid darkgray;
+        border-bottom: 5px solid darkgray;
     }
 }
