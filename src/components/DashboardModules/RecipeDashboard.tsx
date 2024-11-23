@@ -123,12 +123,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         <p className={styles.recipeSummary}>{recipe.nutrition.summary}</p>
       </div>
       <div className={styles.actions}>
-        <button className={styles.selectButton}>Select Recipe</button>
         <button className={styles.bookmarkButton} aria-label="Bookmark recipe">
           <span role="img" aria-hidden="true">
             📌
           </span>
         </button>
+        <button className={styles.selectButton}>Select Recipe</button>
       </div>
     </div>
   );
