@@ -2,6 +2,8 @@
   padding: 16px;
   background-color: white;
   border-radius: 8px;
+
+  border-bottom: 1px solid lightgrey;
 }
 
 .filterItem {
