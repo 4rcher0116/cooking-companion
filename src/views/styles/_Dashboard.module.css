@@ -45,3 +45,19 @@
         border-bottom: 5px solid darkgray;
     }
 }
+
+.modalContent{
+    width: 100%;
+    height: 100%;
+
+    position:relative;
+}
+
+.closeButton{
+    position:absolute;
+    top: 0;
+    right: 0;
+
+    z-index: 1000000;
+    transform: translate(0, -100%);
+}

@@ -1,7 +1,13 @@
 import React from 'react';
 import styles from './styles/_Dashboard.module.css'
+import { Button, Modal } from '@mui/material';
+import LeaderboardScreen from '../components/DashboardModules/LeaderboardScreen';
 
 const Dashboard = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <div className={styles.dashboardContent}>
       <div className={styles.headerContent}>
@@ -16,10 +22,21 @@ const Dashboard = () => {
             Animated Character Placeholder
           </div>
           <div>
-            Leaderboard Shortcut Placeholder
+          <Button onClick={handleOpen}>Open Leadrboard</Button>
           </div>
         </div>
       </div>
+      <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      >
+        <div className={styles.modalContent}>
+          <Button className={styles.closeButton} onClick={handleClose}>Close</Button>
+          <LeaderboardScreen/>
+        </div>
+      </Modal>
     </div>
   )
 }
