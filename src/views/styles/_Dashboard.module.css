@@ -1,0 +1,47 @@
+.dashboardContent {
+    background-color: lightblue;
+    height: 100vh;
+    width: 100vw;
+}
+
+.headerContent {
+    border-bottom: 1px solid darkgrey;
+
+    .headerText {
+        font-size: 3vh;
+        font-weight: bold;
+
+        color: darkred
+    }
+
+    padding: 0 1em;
+}
+
+.body {
+    width: 100%;
+    height: calc(100% - 100px);
+    
+    display: flex;
+    flex-direction: row;
+
+    .recipeDashboardContainer {
+        height: 100%;
+        width: 60%;
+
+        border-right: 1px solid darkgray;
+    }
+
+    .rightContainer {
+        height: 100%;
+        width: 40%;
+
+        display: flex;
+        flex-direction: column;        
+    }
+
+    .animatedCharacterContainer {
+        height: 50%;
+
+        border-bottom: 1px solid darkgray;
+    }
+}
