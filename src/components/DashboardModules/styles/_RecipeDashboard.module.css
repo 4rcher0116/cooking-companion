@@ -9,3 +9,101 @@
 .filterItem {
   width: 100%;
 }
+
+
+.recipeCardList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recipeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  margin: 0 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.recipeImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.recipeDetails {
+  flex-grow: 1;
+  margin-left: 16px;
+}
+
+.recipeTitle {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 4px;
+}
+
+.recipeSummary {
+  font-size: 14px;
+  color: #757575;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selectButton {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.selectButton:hover {
+  background-color: #388e3c;
+}
+
+.bookmarkButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #757575;
+}
+
+.bookmarkButton:hover {
+  color: #424242;
+}
+
+
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+
+  max-height: calc(100% - 45px);
+}
+
+.filterMenuContainerInDashboard {
+  position: sticky;
+  top: 16px; /* Adjust this value to control the sticky position */
+  align-self: flex-start; /* Ensure the filter menu aligns properly */
+  z-index: 10; /* To ensure it stays above other elements */
+
+  width: 100%;
+}
+
+.recipeListContainer {
+  padding-top: 16px;
+  overflow-y: auto;
+  height: 100%;
+}

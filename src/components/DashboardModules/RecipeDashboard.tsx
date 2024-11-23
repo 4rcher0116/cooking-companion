@@ -1,20 +1,20 @@
-import {
-  TextField,
-  Slider,
-  Autocomplete,
-  Grid,
-} from "@mui/material";
-import styles from './styles/_RecipeDashboard.module.css'
+import { TextField, Slider, Autocomplete, Grid } from "@mui/material";
+import styles from "./styles/_RecipeDashboard.module.css";
+import { RecipeDTO } from "../../constants/RecipeDTO";
+import { sampleRecipes } from "../../constants/SampleRecipes";
 
 const RecipeDashboard = () => {
   return (
-    <div>
+    <div className={styles.dashboardContainer}>
+      <div className={styles.filterMenuContainerInDashboard}>
         <FilterMenu />
-        <div>Recipe Renderer Placeholder</div>
+      </div>
+      <div className={styles.recipeListContainer}>
+        <RecipeCardList recipes={[...sampleRecipes,...sampleRecipes,...sampleRecipes,...sampleRecipes,...sampleRecipes]} />
+      </div>
     </div>
-  )
-}
-
+  );
+};
 
 const FilterMenu = () => {
   // Options for the autocomplete fields
@@ -101,4 +101,48 @@ const FilterMenu = () => {
   );
 };
 
-export default RecipeDashboard
+type RecipeCardProps = {
+  recipe: RecipeDTO;
+};
+
+type RecipeCardListProps = {
+  recipes: RecipeDTO[];
+};
+
+// RecipeCard Component: Renders a single recipe
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+  return (
+    <div className={styles.recipeCard}>
+      <img
+        src={recipe.image}
+        alt={recipe.title}
+        className={styles.recipeImage}
+      />
+      <div className={styles.recipeDetails}>
+        <h3 className={styles.recipeTitle}>{recipe.title}</h3>
+        <p className={styles.recipeSummary}>{recipe.nutrition.summary}</p>
+      </div>
+      <div className={styles.actions}>
+        <button className={styles.selectButton}>Select Recipe</button>
+        <button className={styles.bookmarkButton} aria-label="Bookmark recipe">
+          <span role="img" aria-hidden="true">
+            📌
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// RecipeCardList Component: Renders a vertical list of RecipeCards
+const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
+  return (
+    <div className={styles.recipeCardList}>
+      {recipes.map((recipe) => (
+        <RecipeCard key={recipe.id} recipe={recipe} />
+      ))}
+    </div>
+  );
+};
+
+export default RecipeDashboard;
