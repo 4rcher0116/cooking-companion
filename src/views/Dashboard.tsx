@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles/_Dashboard.module.css";
 import { Button, Modal } from "@mui/material";
 import LeaderboardScreen from "../components/DashboardModules/LeaderboardScreen";
+import RecipeDashboard from "../components/DashboardModules/RecipeDashboard";
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
@@ -15,7 +16,7 @@ const Dashboard = () => {
       </div>
       <div className={styles.body}>
         <div className={styles.recipeDashboardContainer}>
-          Recipe Dash Placeholder
+          <RecipeDashboard />
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
