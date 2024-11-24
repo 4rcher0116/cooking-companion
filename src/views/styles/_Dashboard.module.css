@@ -52,9 +52,18 @@
     }
 
     .animatedCharacterContainer {
-        height: calc(50% - 43px);
-
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-bottom: 5px solid darkgray;
+    }
+
+    .buttonContainer{
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -94,4 +103,48 @@
     border-radius: 50% !important;
     border: 2px solid black !important;
     padding: 3px !important;
+}
+
+.leaderboardPreview {
+    background-color: lightblue;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+      
+      .leaderboardPreviewTitle {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      
+      .leaderboardPreviewList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .leaderboardPreviewItem {
+        font-size: 1em;
+        margin: 5px 0;
+      }
+      
+      .leaderboardPreviewFooter {
+        font-size: 0.9em;
+        font-style: italic;
+        color: #888;
+        margin-top: 10px;
+      }
+  }
+
+.leaderboardPreview:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
