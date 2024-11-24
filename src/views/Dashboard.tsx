@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./styles/_Dashboard.module.css";
-import { Button, Icon, IconButton, Modal } from "@mui/material";
+import { Button, Menu, MenuItem, IconButton, Modal } from "@mui/material";
 import LeaderboardScreen from "../components/DashboardModules/LeaderboardScreen";
 import RecipeDashboard from "../components/DashboardModules/RecipeDashboard";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -9,26 +9,47 @@ import { players } from "../constants/SampleLeaderboard";
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
+  const[menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let navigate = useNavigate();
 
-  const topPlayers = players.slice(0,3); 
+  const handleMenuOpen = (event:React.MouseEvent<HTMLElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+  const handleMenuClose = () => {setMenuAnchor(null)};
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    handleMenuClose();
+  };
 
   return (
     <div className={styles.dashboardContent}>
       <div className={styles.headerContent}>
         <p className={styles.headerText}>Cooking Companion</p>
-        <IconButton className={styles.iconButtonStyles}
-          onClick={()=> {navigate("/userAccount")}}>
-          <PermIdentityIcon></PermIdentityIcon></IconButton>
+        <IconButton
+          className={styles.iconButtonStyles}
+          onClick={handleMenuOpen}
+        >
+          <PermIdentityIcon />
+        </IconButton>
+        <Menu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => handleNavigate("/userAccount")}>
+            Achievements
+          </MenuItem>
+          <MenuItem onClick={() => handleNavigate("/savedRecipes")}>
+            Saved Recipes Page
+          </MenuItem>
+        </Menu>
       </div>
-
       <div className={styles.body}>
         <div className={styles.recipeDashboardContainer}>
           <RecipeDashboard />
         </div>
-
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
             Animated Character Placeholder
