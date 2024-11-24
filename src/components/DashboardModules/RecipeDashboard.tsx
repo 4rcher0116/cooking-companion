@@ -10,7 +10,15 @@ const RecipeDashboard = () => {
         <FilterMenu />
       </div>
       <div className={styles.recipeListContainer}>
-        <RecipeCardList recipes={[...sampleRecipes,...sampleRecipes,...sampleRecipes,...sampleRecipes,...sampleRecipes]} />
+        <RecipeCardList
+          recipes={[
+            ...sampleRecipes,
+            ...sampleRecipes,
+            ...sampleRecipes,
+            ...sampleRecipes,
+            ...sampleRecipes,
+          ]}
+        />
       </div>
     </div>
   );
@@ -45,6 +53,12 @@ const FilterMenu = () => {
             renderInput={(params) => (
               <TextField {...params} label="Meal Type" variant="outlined" />
             )}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
+            }}
             className={styles.filterItem}
           />
         </Grid>
@@ -54,6 +68,12 @@ const FilterMenu = () => {
             renderInput={(params) => (
               <TextField {...params} label="Max Cook Time" variant="outlined" />
             )}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
+            }}
             className={styles.filterItem}
           />
         </Grid>
@@ -63,6 +83,12 @@ const FilterMenu = () => {
             renderInput={(params) => (
               <TextField {...params} label="Skill Level" variant="outlined" />
             )}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
+            }}
             className={styles.filterItem}
           />
         </Grid>
@@ -73,26 +99,64 @@ const FilterMenu = () => {
             renderInput={(params) => (
               <TextField {...params} label="Calories" variant="outlined" />
             )}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
+            }}
             className={styles.filterItem}
           />
         </Grid>
         <Grid item xs={4}>
           <div className={styles.filterItem}>
             <label>Serving Size</label>
-            <Slider
-              defaultValue={1}
-              step={1}
-              marks
-              min={1}
-              max={20}
-              valueLabelDisplay="auto"
-            />
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Slider
+                defaultValue={1}
+                step={1}
+                marks
+                min={1}
+                max={20}
+                valueLabelDisplay="auto"
+                sx={{
+                  color: "#835352", // Custom track and thumb color
+                  "& .MuiSlider-thumb": {
+                    backgroundColor: "#835352", // Custom thumb color
+                  },
+                  "& .MuiSlider-track": {
+                    backgroundColor: "#FF5733", // Custom track color
+                  },
+                  "& .MuiSlider-rail": {
+                    backgroundColor: "#E0E0E0", // Optional: rail color (unfilled part of slider)
+                  },
+                  width: "90%",
+                }}
+              />
+            </div>
           </div>
         </Grid>
         <Grid item xs={4}>
           <TextField
             label="Name Search"
             variant="outlined"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "#835352", // Custom outline color when focused
+                },
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "#835352", // Custom label color when focused
+              },
+            }}
             className={styles.filterItem}
           />
         </Grid>
