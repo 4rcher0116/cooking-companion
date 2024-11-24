@@ -41,8 +41,8 @@ const Dashboard = () => {
           <MenuItem onClick={() => handleNavigate("/userAccount")}>
             Achievements
           </MenuItem>
-          <MenuItem onClick={() => handleNavigate("/savedRecipes")}>
-            Saved Recipes Page
+          <MenuItem onClick={() => handleNavigate("/bookmark")}>
+            Bookmarks
           </MenuItem>
         </Menu>
       </div>
