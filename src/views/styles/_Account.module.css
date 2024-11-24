@@ -1,15 +1,107 @@
-.accountContainer{
-    padding-top: 150px;
-    min-height: 100vh;
+.accountContent{
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    align-items: center;
     background: white;
 }
 
-.header{
-    font-size:32px;
-    font-weight: bold;
-    text-align: center;
-    marigin: 40px 0 20px 0;
+.headerContent{
+    border-bottom: 2.5px solid black;
+    display: flex;
+    align-items:center;
+    justify-content: flex-start;
+    height: 50px;
+    background: grey;
+    padding-left:20px;
+
+    .headerText{
+        font-size: 2vh;
+        font-weight:bold;
+        color:white;
+    }
 }
+
+.titleContent{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding-top: 10px;
+    margin-bottom: 25px;
+
+    .titleText{
+        font-size:2.5vh;
+        font-weight:bold;
+        color:black;
+        text-align:center;
+    }
+}
+
+.body{
+    flex:1;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    background-color: white;
+
+    .achievementsContainer{
+        width:80%;
+        max-width:800px;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.achievementList{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.achievementItem{
+    background-color:aliceblue;
+    border:1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.achievementDescription{
+    font-size: 1em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.achievementCategory{
+    font-size: 0.9em;
+    font-style:italic;
+    color:#888;
+}
+
+.buttonContent {
+    display: flex;
+    justify-content: flex-end; 
+    padding: 7px 25px; 
+    align-items: center;
+    
+  }
+  
+  .buttonContainer {
+    background-color:cadetblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+  }
+  
+  .buttonContainer:hover {
+    background-color: black;
+  }
+  
