@@ -3,7 +3,7 @@
     width:100vw;
     display:flex;
     flex-direction: column;
-    background: white;
+    background: beige;
 }
 
 .headerContent{
@@ -18,7 +18,7 @@
     .headerText{
         font-size: 2vh;
         font-weight: bold;
-        color:white;
+        color:darkred;
     }
 }
 

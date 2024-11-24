@@ -1,3 +1,7 @@
+.accountContainer{
+    background-color: beige;
+}
+
 .accountContent{
     height: 100vh;
     width: 100vw;
@@ -18,7 +22,7 @@
     .headerText{
         font-size: 2vh;
         font-weight:bold;
-        color:white;
+        color:darkred;
     }
 }
 
@@ -42,7 +46,7 @@
     display:flex;
     justify-content: center;
     align-items:center;
-    background-color: white;
+    background-color: beige;
 
     .achievementsContainer{
         width:80%;
