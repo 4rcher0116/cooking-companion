@@ -17,6 +17,22 @@
   }
 }
 
+.textContainer {
+  width: 100%;
+  height: 100%;
+
+  border: 3px solid black;
+  border-radius: 15px;
+
+  padding: 3px;
+
+
+  .speechBubbleTypography {
+    color: #774f38;
+    font-size: 3.5vh;
+  }
+}
+
 @keyframes blink {
   0%,
   100% {
@@ -30,11 +46,17 @@
 .iconBorder {
   position: relative; /* Relative container for absolute icons */
   border: 2px solid black;
-  padding: 20px; /* Padding inside the border */
-  width: 100%; /* Example width */
-  height: 90%; /* Example height */
+  padding: 10px;
+  width: 60%; /* Example width */
+  height: 92%; /* Example height */
   background-color: wheat;
-  border-radius: 20px; /* Optional rounded corners */
+  border-radius: 25px; /* Optional rounded corners */
+
+  margin: 10px 10px 10px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cornerIcon {

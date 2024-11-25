@@ -1,10 +1,10 @@
 import TypewriterComponent from "typewriter-effect";
 import styles from "./styles/_AnimatedCharacter.module.css";
 import { ReactNode } from "react";
-import CookieIcon from "@mui/icons-material/Cookie";
-import IcecreamIcon from "@mui/icons-material/Icecream";
-import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
-import LunchDiningIcon from "@mui/icons-material/LunchDining";
+import CookieIcon from "@mui/icons-material/CookieOutlined";
+import IcecreamIcon from "@mui/icons-material/IcecreamOutlined";
+import LocalPizzaIcon from "@mui/icons-material/LocalPizzaOutlined";
+import LunchDiningIcon from "@mui/icons-material/LunchDiningOutlined";
 
 type AnimatedCharacterProps = {
   sourceImage: string | undefined;
