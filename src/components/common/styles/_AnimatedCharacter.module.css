@@ -27,76 +27,39 @@
   }
 }
 
-/* Define styles for the container */
 .iconBorder {
-  position: relative;
+  position: relative; /* Relative container for absolute icons */
   border: 2px solid black;
-  padding: 10px;
-
-  width: 100%;
+  padding: 20px; /* Padding inside the border */
+  width: 100%; /* Example width */
+  height: 90%; /* Example height */
   background-color: wheat;
+  border-radius: 20px; /* Optional rounded corners */
 }
 
-.textContainer {
-  border: 2px solid black;
-  height: 100%;
-  width: 100%;
-  border-radius: 5px;
-}
-
-.speechBubbleTypography {
-  color: #774f38;
-  font-size: 4.5vh;
-}
-
-/* Top-left corner */
-.iconBorder::before {
-  content: "";
-  background-image: url("/src/assets/Icons/icon_row2_col1.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+.cornerIcon {
   position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 16px;
-  height: 16px;
+  font-size: 24px; /* Adjust the size of the icons */
+  color: black; /* Icon color */
 }
 
-/* Top-right corner */
-.iconBorder::after {
-  content: "";
-  background-image: url("/src/assets/Icons/icon_row2_col2.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 16px;
-  height: 16px;
+/* Positioning the icons in the corners */
+.topLeft {
+  top: -12px;
+  left: -12px;
 }
 
-/* Bottom-left corner */
+.topRight {
+  top: -12px;
+  right: -12px;
+}
+
 .bottomLeft {
-  content: "";
-  background-image: url("/src/assets/Icons/icon_row2_col6.png");
-  position: absolute;
-  bottom: -10px;
-  left: -10px;
-  width: 16px;
-  height: 16px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  bottom: -12px;
+  left: -12px;
 }
 
-/* Bottom-right corner */
 .bottomRight {
-  content: "";
-  background-image: url("/src/assets/Icons/icon_row3_col3.png");
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  width: 16px;
-  height: 16px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  bottom: -12px;
+  right: -12px;
 }
