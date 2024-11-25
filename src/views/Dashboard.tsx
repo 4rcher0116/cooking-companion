@@ -6,6 +6,8 @@ import RecipeDashboard from "../components/DashboardModules/RecipeDashboard";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { useNavigate } from "react-router-dom";
 import { players } from "../constants/SampleLeaderboard";
+import AnimatedCharacter from "../components/common/AnimatedCharacter";
+import characterImage from "../assets/Character/redpandaThumbsUp.png";
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
@@ -52,7 +54,7 @@ const Dashboard = () => {
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
-            Animated Character Placeholder
+            <AnimatedCharacter sourceImage={characterImage} message="Hello Chef, begin by selecting a recipe!" />
           </div>
           <div className={styles.buttonContainer}>
             <div className={styles.leaderboardPreview} onClick={handleOpen}>

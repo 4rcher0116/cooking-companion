@@ -1,0 +1,102 @@
+.mascotContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  position: relative;
+
+  .speechBubbleCursor {
+    display: inline-block;
+    background-color: black;
+    width: 2px; /* Adjust the thickness */
+    height: 2.5rem; /* Set height relative to font size */
+    margin-left: 3px; /* Optional: add space between text and cursor */
+    animation: blink 1.2s step-end infinite;
+
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Define styles for the container */
+.iconBorder {
+  position: relative;
+  border: 2px solid black;
+  padding: 10px;
+
+  width: 100%;
+  background-color: wheat;
+}
+
+.textContainer {
+  border: 2px solid black;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.speechBubbleTypography {
+  color: #774f38;
+  font-size: 4.5vh;
+}
+
+/* Top-left corner */
+.iconBorder::before {
+  content: "";
+  background-image: url("/src/assets/Icons/icon_row2_col1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Top-right corner */
+.iconBorder::after {
+  content: "";
+  background-image: url("/src/assets/Icons/icon_row2_col2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Bottom-left corner */
+.bottomLeft {
+  content: "";
+  background-image: url("/src/assets/Icons/icon_row2_col6.png");
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Bottom-right corner */
+.bottomRight {
+  content: "";
+  background-image: url("/src/assets/Icons/icon_row3_col3.png");
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
