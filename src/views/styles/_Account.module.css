@@ -65,14 +65,23 @@
     margin: 0;
 }
 
-.achievementItem{
-    background-color:aliceblue;
-    border:1px solid #ddd;
+.achievementItem {
+    display: flex; /* Flexbox for horizontal alignment */
+    justify-content: space-between; /* Push progress bar to the right */
+    align-items: center; /* Align content vertically */
+    background-color: aliceblue;
+    border: 1px solid #ddd;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+  }
+
+  .achievementContent {
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack title, description, and category vertically */
+    flex: 1; /* Allow text content to take the available space */
+  }
 
 .achievementDescription{
     font-size: 1em;
@@ -107,5 +116,11 @@
   
   .buttonContainer:hover {
     background-color: black;
+  }
+   
+  .progressContainer {
+    margin-left: auto; 
+    display: flex;
+    align-items: center; 
   }
   
