@@ -21,6 +21,7 @@ const AnimatedCharacter = ({
       <IconBorder>
         <div className={styles.textContainer}>
           <TypewriterComponent
+            key={message}
             options={{
               autoStart: true,
               loop: false,

@@ -7,11 +7,16 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { useNavigate } from "react-router-dom";
 import { players } from "../constants/SampleLeaderboard";
 import AnimatedCharacter from "../components/common/AnimatedCharacter";
-import characterImage from "../assets/Character/redpandaThumbsUp.png";
+import characterImage from "../assets/Character/redpandaNom.png";
+import characterKnife from "../assets/Character/redpandaKnife.png";
+import characterCry from "../assets/Character/redpandaCry.png";
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
   const[menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const [emotion, setEmotion] = React.useState<"knife" | "cry" | "hype">("hype");
+  const [message, setMessage] = React.useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let navigate = useNavigate();
@@ -23,6 +28,47 @@ const Dashboard = () => {
   const handleNavigate = (path: string) => {
     navigate(path);
     handleMenuClose();
+  };
+
+  React.useEffect(() => {
+    let idleTimeoutShort: NodeJS.Timeout | null = null;
+    let idleTimeoutLong: NodeJS.Timeout | null = null;
+
+    const resetIdleTimer = () => {
+      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
+      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
+      setEmotion("hype"); // User is active
+      setMessage("Cooking is your superpower! What’s next on the menu?");
+
+      idleTimeoutShort = setTimeout(() => {
+        setEmotion("cry");
+        setMessage("Oh no, don’t go! The recipe isn’t done yet!");
+      }, 10000); // 10 seconds
+
+      idleTimeoutLong = setTimeout(() => {
+        setEmotion("knife"); // Long idle
+        setMessage("I might have to use this... on some ingredients, of course!");
+      }, 20000); // 20 seconds
+    };
+
+    window.addEventListener("keydown", resetIdleTimer);
+    window.addEventListener("click", resetIdleTimer);
+
+    // Initialize timers on load
+    resetIdleTimer();
+
+    return () => {
+      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
+      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
+      window.removeEventListener("keydown", resetIdleTimer);
+      window.removeEventListener("click", resetIdleTimer);
+    };
+  }, []);
+
+  const emotionImages = {
+    knife: characterKnife,
+    cry: characterCry,
+    hype: characterImage, // Default image when active
   };
 
   return (
@@ -54,7 +100,7 @@ const Dashboard = () => {
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
-            <AnimatedCharacter sourceImage={characterImage} message="Hello Chef, begin by selecting a recipe!" />
+            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} />
           </div>
           <div className={styles.buttonContainer}>
             <div className={styles.leaderboardPreview} onClick={handleOpen}>
