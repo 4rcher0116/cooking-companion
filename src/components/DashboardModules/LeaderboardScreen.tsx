@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import styles from './styles/_LeaderboardScreen.module.css';
-import { players } from '../../constants/SampleLeaderboard';
-
+import { players as samplePlayers } from '../../constants/SampleLeaderboard';
+import { calculateTotalScore } from '../../utils/localStorageUtils';
 
 const LeaderboardScreen: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
@@ -25,6 +25,18 @@ const LeaderboardScreen: React.FC = () => {
     setJoinCode(event.target.value);
   };
 
+  // Calculate user's total score
+  const userScore = calculateTotalScore();
+
+  // Create an extended list of players including the user
+  const extendedPlayers = [
+    ...samplePlayers,
+    { id: 'user', name: 'You', score: userScore }
+  ];
+
+  // Sort players by score in descending order
+  extendedPlayers.sort((a, b) => b.score - a.score);
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -33,7 +45,7 @@ const LeaderboardScreen: React.FC = () => {
       <main className={styles.leaderboard}>
         <h1 className={styles.title}>Leaderboard</h1>
         <ul className={styles.playerList}>
-          {players.map((player) => (
+          {extendedPlayers.map((player) => (
             <li key={player.id} className={styles.playerItem}>
               {player.name}: {player.score} points
             </li>

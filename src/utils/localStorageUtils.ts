@@ -1,6 +1,7 @@
 // src/utils/localStorageUtils.ts
 
 import { AchievementDTO } from "../constants/AchievementDTO";
+import { achievementsList } from "../constants/AchievementsList";
 
 /**
  * Retrieves the progress count of a specific achievement from localStorage.
@@ -96,4 +97,13 @@ export const setComplexAchievementData = (achievementId: number, data: any): voi
 export const resetComplexAchievementData = (achievementId: number): void => {
   const key = `complex_${achievementId}`;
   localStorage.removeItem(key);
+};
+
+/**
+ * Calculates the total score by summing up all achievements' progress.
+ * @returns The total score.
+ */
+export const calculateTotalScore = (): number => {
+  const allProgress = getAllAchievementsProgress(achievementsList);
+  return Object.values(allProgress).reduce((acc, curr) => acc + curr, 0);
 };
