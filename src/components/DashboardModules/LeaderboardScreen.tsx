@@ -43,6 +43,7 @@ const LeaderboardScreen: React.FC = () => {
 
   return (
     <div className={styles.leaderboardContainer}>
+      <h1 className={styles.leaderboardTitle}>🏆 Leaderboard 🏆</h1>
       <div className={styles.headerRow}>
         <div className={`${styles.headerText} ${styles.rankHeader}`}>Rank</div>
         <div className={`${styles.headerText} ${styles.nameHeader}`}>Player Name</div>
