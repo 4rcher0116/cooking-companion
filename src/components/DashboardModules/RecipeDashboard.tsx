@@ -2,6 +2,15 @@ import { TextField, Slider, Autocomplete, Grid } from "@mui/material";
 import styles from "./styles/_RecipeDashboard.module.css";
 import { RecipeDTO } from "../../constants/RecipeDTO";
 import { sampleRecipes } from "../../constants/SampleRecipes";
+import {
+  calorieOptions,
+  cookTimeOptions,
+  mealTypeOptions,
+  skillLevelOptions,
+} from "../../constants/FilterValues";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { setFilters } from "../../store/slices/recipeSearchSlice";
 
 const RecipeDashboard = () => {
   return (
@@ -25,23 +34,12 @@ const RecipeDashboard = () => {
 };
 
 const FilterMenu = () => {
-  // Options for the autocomplete fields
-  const mealTypeOptions = ["Breakfast", "Lunch", "Dinner", "Snack/Dessert"];
-  const cookTimeOptions = [
-    "Quick (under 15 minutes)",
-    "Short (15-30 minutes)",
-    "Moderate (30-60 minutes)",
-    "Long (60-90 minutes)",
-    "Unlimited/No Limit",
-  ];
-  const calorieOptions = [
-    "Low (under 200 calories)",
-    "Moderate (under 400 calories)",
-    "Standard (under 600 calories)",
-    "Hearty (under 800 calories)",
-    "High (over 800 calories)",
-  ];
-  const skillLevelOptions = ["Beginner", "Intermediate", "Advanced"];
+  const dispatch = useDispatch<AppDispatch>();
+  const filters = useSelector((state: RootState) => state.recipeSearch.filters);
+
+  const handleFilterChange = (name: string, value: any) => {
+    dispatch(setFilters({ ...filters, [name]: value }));
+  };
 
   return (
     <div className={styles.filterMenuContainer}>
@@ -50,14 +48,15 @@ const FilterMenu = () => {
         <Grid item xs={4}>
           <Autocomplete
             options={mealTypeOptions}
+            value={filters.mealType}
+            onChange={(event, newValue) => handleFilterChange('mealType', newValue)}
             renderInput={(params) => (
               <TextField {...params} label="Meal Type" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#835352", // Your custom accent color
-                },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#835352", // Your custom accent color
+              },
             }}
             className={styles.filterItem}
           />
@@ -65,14 +64,15 @@ const FilterMenu = () => {
         <Grid item xs={4}>
           <Autocomplete
             options={cookTimeOptions}
+            value={filters.maxCookTime}
+            onChange={(event, newValue) => handleFilterChange('maxCookTime', newValue)}
             renderInput={(params) => (
               <TextField {...params} label="Max Cook Time" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#835352", // Your custom accent color
-                },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#835352", // Your custom accent color
+              },
             }}
             className={styles.filterItem}
           />
@@ -80,14 +80,15 @@ const FilterMenu = () => {
         <Grid item xs={4}>
           <Autocomplete
             options={skillLevelOptions}
+            value={filters.skillLevel}
+            onChange={(event, newValue) => handleFilterChange('skillLevel', newValue)}
             renderInput={(params) => (
               <TextField {...params} label="Skill Level" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#835352", // Your custom accent color
-                },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#835352", // Your custom accent color
+              },
             }}
             className={styles.filterItem}
           />
@@ -96,14 +97,15 @@ const FilterMenu = () => {
         <Grid item xs={4}>
           <Autocomplete
             options={calorieOptions}
+            value={filters.calories}
+            onChange={(event, newValue) => handleFilterChange('calories', newValue)}
             renderInput={(params) => (
               <TextField {...params} label="Calories" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#835352", // Your custom accent color
-                },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#835352", // Your custom accent color
+              },
             }}
             className={styles.filterItem}
           />
@@ -120,12 +122,13 @@ const FilterMenu = () => {
               }}
             >
               <Slider
-                defaultValue={1}
+                defaultValue={filters.servingSize}
                 step={1}
                 marks
                 min={1}
                 max={20}
                 valueLabelDisplay="auto"
+                onChange={(event, newValue) => handleFilterChange('servingSize', newValue)}
                 sx={{
                   color: "#835352", // Custom track and thumb color
                   "& .MuiSlider-thumb": {
@@ -147,6 +150,8 @@ const FilterMenu = () => {
           <TextField
             label="Name Search"
             variant="outlined"
+            value={filters.nameSearch}
+            onChange={(event) => handleFilterChange('nameSearch', event.target.value)}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
