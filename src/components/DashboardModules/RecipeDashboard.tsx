@@ -10,24 +10,28 @@ import {
 } from "../../constants/FilterValues";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { setFilters } from "../../store/slices/recipeSearchSlice";
+import { fetchRecipes, setFilters } from "../../store/slices/recipeSearchSlice";
+import { useEffect } from "react";
 
 const RecipeDashboard = () => {
+  const recipes = useSelector((state: RootState) => state.recipeSearch.recipes);
+  const sampleRecipesList = [
+    ...sampleRecipes,
+    ...sampleRecipes,
+    ...sampleRecipes,
+    ...sampleRecipes,
+    ...sampleRecipes,
+  ];
+
+
+
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.filterMenuContainerInDashboard}>
         <FilterMenu />
       </div>
       <div className={styles.recipeListContainer}>
-        <RecipeCardList
-          recipes={[
-            ...sampleRecipes,
-            ...sampleRecipes,
-            ...sampleRecipes,
-            ...sampleRecipes,
-            ...sampleRecipes,
-          ]}
-        />
+        <RecipeCardList recipes={recipes} />
       </div>
     </div>
   );
@@ -41,6 +45,10 @@ const FilterMenu = () => {
     dispatch(setFilters({ ...filters, [name]: value }));
   };
 
+  useEffect(() => {
+    dispatch(fetchRecipes(filters));
+  }, [filters]);
+
   return (
     <div className={styles.filterMenuContainer}>
       <Grid container spacing={2}>
@@ -49,14 +57,17 @@ const FilterMenu = () => {
           <Autocomplete
             options={mealTypeOptions}
             value={filters.mealType}
-            onChange={(event, newValue) => handleFilterChange('mealType', newValue)}
+            onChange={(event, newValue) =>
+              handleFilterChange("mealType", newValue)
+            }
             renderInput={(params) => (
               <TextField {...params} label="Meal Type" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#835352", // Your custom accent color
-              },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
             }}
             className={styles.filterItem}
           />
@@ -65,14 +76,17 @@ const FilterMenu = () => {
           <Autocomplete
             options={cookTimeOptions}
             value={filters.maxCookTime}
-            onChange={(event, newValue) => handleFilterChange('maxCookTime', newValue)}
+            onChange={(event, newValue) =>
+              handleFilterChange("maxCookTime", newValue)
+            }
             renderInput={(params) => (
               <TextField {...params} label="Max Cook Time" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#835352", // Your custom accent color
-              },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
             }}
             className={styles.filterItem}
           />
@@ -81,14 +95,17 @@ const FilterMenu = () => {
           <Autocomplete
             options={skillLevelOptions}
             value={filters.skillLevel}
-            onChange={(event, newValue) => handleFilterChange('skillLevel', newValue)}
+            onChange={(event, newValue) =>
+              handleFilterChange("skillLevel", newValue)
+            }
             renderInput={(params) => (
               <TextField {...params} label="Skill Level" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#835352", // Your custom accent color
-              },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
             }}
             className={styles.filterItem}
           />
@@ -98,14 +115,17 @@ const FilterMenu = () => {
           <Autocomplete
             options={calorieOptions}
             value={filters.calories}
-            onChange={(event, newValue) => handleFilterChange('calories', newValue)}
+            onChange={(event, newValue) =>
+              handleFilterChange("calories", newValue)
+            }
             renderInput={(params) => (
               <TextField {...params} label="Calories" variant="outlined" />
             )}
             sx={{
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#835352", // Your custom accent color
-              },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#835352", // Your custom accent color
+                },
             }}
             className={styles.filterItem}
           />
@@ -128,7 +148,9 @@ const FilterMenu = () => {
                 min={1}
                 max={20}
                 valueLabelDisplay="auto"
-                onChange={(event, newValue) => handleFilterChange('servingSize', newValue)}
+                onChange={(event, newValue) =>
+                  handleFilterChange("servingSize", newValue)
+                }
                 sx={{
                   color: "#835352", // Custom track and thumb color
                   "& .MuiSlider-thumb": {
@@ -151,7 +173,9 @@ const FilterMenu = () => {
             label="Name Search"
             variant="outlined"
             value={filters.nameSearch}
-            onChange={(event) => handleFilterChange('nameSearch', event.target.value)}
+            onChange={(event) =>
+              handleFilterChange("nameSearch", event.target.value)
+            }
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {

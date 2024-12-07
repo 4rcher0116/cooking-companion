@@ -1,10 +1,10 @@
 export interface FilterValues {
-    mealType: string;
-    maxCookTime: string;
-    skillLevel: string;
-    calories: string;
-    servingSize: number;
-    nameSearch: string;
+  mealType: string;
+  maxCookTime: string;
+  skillLevel: string;
+  calories: string;
+  servingSize: number;
+  nameSearch: string;
 }
 
 export const EMPTY_FILTER_VALUES: FilterValues = {
@@ -18,10 +18,17 @@ export const EMPTY_FILTER_VALUES: FilterValues = {
 
 // Options for the autocomplete fields
 export const mealTypeOptions = [
-  "Breakfast",
-  "Lunch",
-  "Dinner",
-  "Snack/Dessert",
+  "main course",
+  "side dish",
+  "dessert",
+  "appetizer",
+  "salad",
+  "bread",
+  "breakfast",
+  "soup",
+  "beverage",
+  "sauce",
+  "drink",
 ];
 
 export const cookTimeOptions = [
