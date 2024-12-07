@@ -10,55 +10,42 @@
     background-color: #D4DAD8;
     height: 100vh;
     width: 100vw;
-
     overflow: hidden;
 }
 
 .headerContent {
-    /* border-bottom: 5px solid black; */
-    display:flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
     background-color: #829189;
-
-   
+    padding: 1em 2em;
 
     .headerText {
         font-size: 5vh;
         font-weight: bold;
-
-        padding: 0;
-        margin: 0;
-
         color: white;
+        margin: 0;
     }
-
-    padding: 1em;
-    padding-right: 2em;
 }
 
 .body {
     width: 100%;
     height: calc(100% - 100px);
-    
     display: flex;
     flex-direction: row;
 
     .recipeDashboardContainer {
         height: 100%;
         width: 60%;
-
         border-right: 5px solid darkgray;
     }
 
     .rightContainer {
         height: 100%;
         width: 40%;
-
         display: flex;
-        flex-direction: column;        
+        flex-direction: column;
     }
 
     .animatedCharacterContainer {
@@ -69,7 +56,7 @@
         border-bottom: 5px solid darkgray;
     }
 
-    .buttonContainer{
+    .buttonContainer {
         height: 50%;
         display: flex;
         justify-content: center;
@@ -77,39 +64,61 @@
     }
 }
 
-.modalContent{
+.modalContent {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
     width: 100vw;
-    
+    background-color: rgba(0, 0, 0, 0.5); /* Add a translucent background */
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     .contentContainer {
-        position:relative;
+        position: relative;
+        background-color: white;
         height: 75vh;
         width: 75vw;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 }
 
-.closeButton{
-    position:absolute;
-    top: 0;
-    right: 0;
-
-    z-index: 1000000;
-
-    transform: translateY(-100%);
-
-    .buttonText {
-        color: white;
-    }
+.closeButton {
+    position: absolute;
+    top: -50px; /* Position above the leaderboard content */
+    left: 90%;
+    transform: translateX(-50%); /* Center horizontally */
+    background-color: #ff6f61; /* High-contrast red */
+    color: white; /* White text for accessibility */
+    font-size: 1.2rem; /* Readable font size */
+    font-weight: bold; /* Emphasize the text */
+    padding: 10px 25px; /* Add padding for the rounded rectangle */
+    border: none; /* Remove border */
+    border-radius: 15px; /* Rounded rectangle */
+    cursor: pointer; /* Indicate interactiveness */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1000; /* Ensure it's above other elements */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add depth */
+    text-align: center; /* Center-align the text */
 }
 
-.iconButtonStyles{
+.closeButton:hover,
+.closeButton:focus {
+    background-color: #e0534f; /* Slightly darker red on hover/focus */
+    transform: scale(1.05); /* Add subtle scaling effect */
+    outline: none; /* Remove default outline */
+}
+
+.closeButton:focus-visible {
+    outline: 3px solid #ffbdb7; /* Accessible focus outline */
+}
+
+.iconButtonStyles {
     height: fit-content;
     width: fit-content;
-
     border-radius: 50% !important;
     border: 2px solid black !important;
     padding: 3px !important;
@@ -123,36 +132,36 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    text-align: center; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-      
-      .leaderboardPreviewTitle {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .leaderboardPreviewTitle {
         font-size: 1.2em;
         font-weight: bold;
         margin-bottom: 10px;
-      }
-      
-      .leaderboardPreviewList {
+    }
+
+    .leaderboardPreviewList {
         list-style: none;
         padding: 0;
         margin: 0;
-      }
-      
-      .leaderboardPreviewItem {
+    }
+
+    .leaderboardPreviewItem {
         font-size: 1em;
         margin: 5px 0;
-      }
-      
-      .leaderboardPreviewFooter {
+    }
+
+    .leaderboardPreviewFooter {
         font-size: 0.9em;
         font-style: italic;
         color: #888;
         margin-top: 10px;
-      }
-  }
+    }
+}
 
 .leaderboardPreview:hover {
     transform: scale(1.02);

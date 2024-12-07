@@ -13,70 +13,30 @@ import characterCry from "../assets/Character/redpandaCry.png";
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
-  const[menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   const [emotion, setEmotion] = React.useState<"knife" | "cry" | "hype">("hype");
   const [message, setMessage] = React.useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleMenuOpen = (event:React.MouseEvent<HTMLElement>) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
   };
-  const handleMenuClose = () => {setMenuAnchor(null)};
+
+  const handleMenuClose = () => {
+    setMenuAnchor(null);
+  };
+
   const handleNavigate = (path: string) => {
     navigate(path);
     handleMenuClose();
   };
 
   const handleSignOut = () => {
-    // Clear auth data (example: token stored in localStorage)
     localStorage.removeItem('authToken');
-    // Redirect to login page
     window.location.href = '/';
-  };
-
-
-  React.useEffect(() => {
-    let idleTimeoutShort: NodeJS.Timeout | null = null;
-    let idleTimeoutLong: NodeJS.Timeout | null = null;
-
-    const resetIdleTimer = () => {
-      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
-      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
-      setEmotion("hype"); // User is active
-      setMessage("Cooking is your superpower! What’s next on the menu?");
-
-      idleTimeoutShort = setTimeout(() => {
-        setEmotion("cry");
-        setMessage("Oh no, don’t go! The recipe isn’t done yet!");
-      }, 10000); // 10 seconds
-
-      idleTimeoutLong = setTimeout(() => {
-        setEmotion("knife"); // Long idle
-        setMessage("I might have to use this... on some ingredients, of course!");
-      }, 20000); // 20 seconds
-    };
-
-    window.addEventListener("keydown", resetIdleTimer);
-    window.addEventListener("click", resetIdleTimer);
-
-    // Initialize timers on load
-    resetIdleTimer();
-
-    return () => {
-      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
-      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
-      window.removeEventListener("keydown", resetIdleTimer);
-      window.removeEventListener("click", resetIdleTimer);
-    };
-  }, []);
-
-  const emotionImages = {
-    knife: characterKnife,
-    cry: characterCry,
-    hype: characterImage, // Default image when active
   };
 
   return (
@@ -100,9 +60,7 @@ const Dashboard = () => {
           <MenuItem onClick={() => handleNavigate("/bookmark")}>
             Bookmarks
           </MenuItem>
-          <MenuItem onClick={() => handleSignOut()}>
-            Sign Out
-          </MenuItem>
+          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
       </div>
       <div className={styles.body}>
@@ -111,7 +69,7 @@ const Dashboard = () => {
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
-            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} />
+            <AnimatedCharacter sourceImage={emotion === "knife" ? characterKnife : emotion === "cry" ? characterCry : characterImage} message={message} />
           </div>
           <div className={styles.buttonContainer}>
             <div className={styles.leaderboardPreview} onClick={handleOpen}>
@@ -129,17 +87,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose}>
         <div className={styles.modalContent}>
           <div className={styles.contentContainer}>
-            <Button className={styles.closeButton} onClick={handleClose}>
-              <span className={styles.buttonText}>Close</span>
-            </Button>
+            <button className={styles.closeButton} onClick={handleClose}>
+              Close
+            </button>
             <LeaderboardScreen />
           </div>
         </div>
