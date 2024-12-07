@@ -1,4 +1,13 @@
-import { TextField, Slider, Autocomplete, Grid, CircularProgress, Typography, Box, Button } from "@mui/material";
+import {
+  TextField,
+  Slider,
+  Autocomplete,
+  Grid,
+  CircularProgress,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
 import styles from "./styles/_RecipeDashboard.module.css";
 import { RecipeDTO } from "../../constants/RecipeDTO";
 import { sampleRecipes } from "../../constants/SampleRecipes";
@@ -11,19 +20,45 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchRecipes, setFilters } from "../../store/slices/recipeSearchSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useImageLoader from "../../hooks/useImageLoader";
 import htmr from "htmr";
+import useDebounce from "../../hooks/useDebounce";
 
 const RecipeDashboard = () => {
+  const filterValues = useSelector(
+    (state: RootState) => state.recipeSearch.filters
+  );
   const recipes = useSelector((state: RootState) => state.recipeSearch.recipes);
-  const sampleRecipesList = [
-    ...sampleRecipes,
-    ...sampleRecipes,
-    ...sampleRecipes,
-    ...sampleRecipes,
-    ...sampleRecipes,
-  ];
+
+  const filteredRecipes = useMemo(() => {
+    let returnRecipes = recipes;
+
+    // Post-network call processing for servingSize and skillLevel filters
+    if (filterValues.servingSize) {
+      returnRecipes = returnRecipes.filter(
+        (recipe) => recipe.servings >= filterValues.servingSize
+      );
+    }
+
+    if (filterValues.skillLevel) {
+      returnRecipes = returnRecipes.filter((recipe) => {
+        const totalSteps = recipe.analyzedInstructions.reduce(
+          (acc, instruction) => acc + instruction.steps.length,
+          0
+        );
+        if (filterValues.skillLevel === "Beginner") {
+          return totalSteps < 10;
+        } else if (filterValues.skillLevel === "Intermediate") {
+          return totalSteps < 25;
+        } else {
+          return totalSteps >= 25;
+        }
+      });
+    }
+
+    return recipes.slice(0, 30);
+  }, [recipes, filterValues]);
 
   return (
     <div className={styles.dashboardContainer}>
@@ -31,7 +66,7 @@ const RecipeDashboard = () => {
         <FilterMenu />
       </div>
       <div className={styles.recipeListContainer}>
-        <RecipeCardList recipes={recipes} />
+        <RecipeCardList recipes={filteredRecipes} />
       </div>
     </div>
   );
@@ -40,14 +75,15 @@ const RecipeDashboard = () => {
 const FilterMenu = () => {
   const dispatch = useDispatch<AppDispatch>();
   const filters = useSelector((state: RootState) => state.recipeSearch.filters);
+  const debouncedFilters = useDebounce(filters, 1200);
 
   const handleFilterChange = (name: string, value: any) => {
     dispatch(setFilters({ ...filters, [name]: value }));
   };
 
   useEffect(() => {
-    dispatch(fetchRecipes(filters));
-  }, [filters]);
+    dispatch(fetchRecipes(debouncedFilters));
+  }, [debouncedFilters, dispatch]);
 
   return (
     <div className={styles.filterMenuContainer}>
@@ -212,7 +248,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
     img.onload = () => setImageLoaded(true);
   }, [imageUrl]);
 
-  const totalSteps = recipe.analyzedInstructions.reduce((acc, instruction) => acc + instruction.steps.length, 0);
+  const totalSteps = recipe.analyzedInstructions.reduce(
+    (acc, instruction) => acc + instruction.steps.length,
+    0
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -230,14 +269,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
           src={imageUrl}
           alt={recipe.title}
           className={styles.recipeImage}
-          style={{ display: imageLoaded ? 'block' : 'none' }}
+          style={{ display: imageLoaded ? "block" : "none" }}
         />
       </div>
       <div className={styles.recipeDetails}>
-        <Typography variant="body1" fontWeight={100} className={styles.recipeTitle}>
+        <Typography
+          variant="body1"
+          fontWeight={100}
+          className={styles.recipeTitle}
+        >
           {recipe.title}
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="body2">
             <strong>Servings:</strong> {recipe.servings}
           </Typography>
@@ -247,25 +290,31 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
           <Typography variant="body2">
             <strong>Steps:</strong> {totalSteps}
           </Typography>
-          <Box sx={{ maxHeight: expanded ? 'none' : '8em', overflow: 'hidden', position: 'relative' }}>
+          <Box
+            sx={{
+              maxHeight: expanded ? "none" : "8em",
+              overflow: "hidden",
+              position: "relative",
+            }}
+          >
             <Typography variant="body2">
               <strong>Description:</strong> {htmr(recipe.nutrition.summary)}
             </Typography>
             {!expanded && (
               <Box
                 sx={{
-                  position: 'absolute',
+                  position: "absolute",
                   bottom: 0,
                   left: 0,
-                  width: '100%',
-                  height: '1.5em',
-                  background: 'linear-gradient(to bottom, transparent, white)',
+                  width: "100%",
+                  height: "1.5em",
+                  background: "linear-gradient(to bottom, transparent, white)",
                 }}
               />
             )}
           </Box>
-          <Button onClick={handleExpandClick} sx={{ alignSelf: 'flex-start' }}>
-            {expanded ? 'Show Less' : 'Show More'}
+          <Button onClick={handleExpandClick} sx={{ alignSelf: "flex-start" }}>
+            {expanded ? "Show Less" : "Show More"}
           </Button>
         </Box>
       </div>
@@ -282,13 +331,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
 };
 
 const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
-  const imageUrls = recipes.map((recipe) => recipe.image);
-  const loadedImages = useImageLoader(imageUrls, 1500); 
+  const imageUrls = useMemo(() => recipes.map((recipe) => recipe.image), [recipes]); // Memoize array
+
+  const loadedImages = useImageLoader(imageUrls, 1500);
 
   return (
     <div className={styles.recipeCardList}>
       {recipes.map((recipe, index) => (
-        <RecipeCard key={recipe.id} recipe={recipe} imageUrl={loadedImages[index] || ''} />
+        <RecipeCard
+          key={recipe.id}
+          recipe={recipe}
+          imageUrl={loadedImages[index] || ""}
+        />
       ))}
     </div>
   );

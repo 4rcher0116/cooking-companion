@@ -20,7 +20,7 @@ const initialState: RecipeSearchState = {
   loading: false,
   error: null,
 };
- 
+
 //TODO: Implement the filters.servingSize and skill level as a frontend filters for the user to select
 //TODO: implement a dietary restrictions and diet choice filter for the user to select
 export const fetchRecipes = createAsyncThunk(
@@ -45,15 +45,14 @@ export const fetchRecipes = createAsyncThunk(
         queryParams.append("maxCalories", filters.calories.toString());
       }
 
-      //unmoddable query params
-      queryParams.append("instructionsRequred", "true");
+      // Unmodifiable query params
+      queryParams.append("instructionsRequired", "true");
       queryParams.append("addRecipeInformation", "true");
       queryParams.append("addRecipeInstructions", "true");
       queryParams.append("ignorePantry", "true");
       queryParams.append("sort", "max-used-ingredients");
       queryParams.append("offset", "0");
-      //todo change to 50 later
-      queryParams.append("number", "1");
+      queryParams.append("number", "100"); // Change to 50 later
 
       const response = await fetch(
         `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?${queryParams.toString()}`,
@@ -75,7 +74,7 @@ export const fetchRecipes = createAsyncThunk(
       const data = await response.json();
 
       // Map the results array to match the RecipeDTO structure
-      const recipes: RecipeDTO[] = data.results.map((recipe: any) => ({
+      let recipes: RecipeDTO[] = data.results.map((recipe: any) => ({
         vegetarian: recipe.vegetarian || false,
         vegan: recipe.vegan || false,
         glutenFree: recipe.glutenFree || false,
@@ -96,7 +95,6 @@ export const fetchRecipes = createAsyncThunk(
         pricePerServing: recipe.pricePerServing || 0,
         id: recipe.id,
         title: recipe.title || "",
-        author: recipe.sourceName || "", // If author maps to sourceName
         readyInMinutes: recipe.readyInMinutes || 0,
         servings: recipe.servings || 0,
         sourceUrl: recipe.sourceUrl || "",
