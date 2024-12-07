@@ -1,7 +1,13 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import styles from './styles/_LeaderboardScreen.module.css';
 import { players as samplePlayers } from '../../constants/SampleLeaderboard';
 import { calculateTotalScore } from '../../utils/localStorageUtils';
+
+interface User {
+  id: number;
+  name: string;
+  achievements: number; // List of achievement IDs the user has completed
+}
 
 const LeaderboardScreen: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
@@ -37,13 +43,37 @@ const LeaderboardScreen: React.FC = () => {
   // Sort players by score in descending order
   extendedPlayers.sort((a, b) => b.score - a.score);
 
-  const users = [
-    { name: 'John Doe', score: 100 },
-    { name: 'Jane Smith', score: 90 },
-    { name: 'Alice Johnson', score: 80 },
-    { name: 'Bob Brown', score: 70 },
-    { name: 'Charlie Davis', score: 60 },
-  ];
+
+  // const users = [
+  //   { name: 'John Doe', score: 100 },
+  //   { name: 'Jane Smith', score: 90 },
+  //   { name: 'Alice Johnson', score: 80 },
+  //   { name: 'Bob Brown', score: 70 },
+  //   { name: 'Charlie Davis', score: 60 },
+  // ];
+
+  const [user, setUser] = useState<User>({ id:15, name: 'John Doe', achievements: 100 }); 
+  const [users, setUsers] = useState<User[]>([]);
+
+  // Example user data, replace with actual API or state management
+  // UseEffect hook to calculate the user's score when the component is loaded
+  useEffect(() => {
+    // Calculate the user's score
+    const currentUser: User = {
+      id: 1, name: 'John Doe', achievements: 1
+    }
+    setUser(currentUser)
+
+
+    // Fetch the leaderboard data (can be from API or mock data)
+    const mockUsers: User[] = [
+      { id: 1, name: 'John Doe', achievements: 1 },
+      { id: 2, name: 'Jane Smith', achievements: 2 },
+      { id: 3, name: 'Alex Johnson', achievements: 3 },
+    ];
+
+    setUsers(mockUsers); // Set users in the leaderboard (replace with actual API call)
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -106,7 +136,7 @@ const LeaderboardScreen: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => {
+          {users.concat(user).map((user, index) => {
             let rankClass = '';
             if (index === 0) {
               rankClass = 'gold'; // Gold for 1st place
@@ -120,7 +150,7 @@ const LeaderboardScreen: React.FC = () => {
               <tr key={index} className={rankClass}>
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
-                <td>{user.score}</td>
+                <td>{user.achievements}</td>
               </tr>
             );
           })}
