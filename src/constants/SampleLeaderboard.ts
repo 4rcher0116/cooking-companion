@@ -1,12 +1,12 @@
 export const players = [
-    { id: 1, name: 'Alice', score: 120 },
-    { id: 2, name: 'Bob', score: 95 },
-    { id: 3, name: 'Charlie', score: 110 },
-    { id: 4, name: 'David', score: 85 },
-    { id: 5, name: 'Eve', score: 130 },
-    { id: 6, name: 'Frank', score: 90 },
-    { id: 7, name: 'Grace', score: 105 },
-    { id: 8, name: 'Hank', score: 75 },
-    { id: 9, name: 'Ivy', score: 115 },
-    { id: 10, name: 'Jack', score: 100 }
-  ];
+  { id: 5, name: 'Eve', score: 50 },
+  { id: 1, name: 'Alice', score: 46 },
+  { id: 9, name: 'Ivy', score: 44 },
+  { id: 3, name: 'Charlie', score: 42 },
+  { id: 7, name: 'Grace', score: 40 },
+  { id: 10, name: 'Jack', score: 38 },
+  { id: 2, name: 'Bob', score: 35 },
+  { id: 6, name: 'Frank', score: 30 },
+  { id: 4, name: 'David', score: 25 },
+  { id: 8, name: 'Hank', score: 20 }
+];
