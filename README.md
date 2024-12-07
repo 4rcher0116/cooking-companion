@@ -45,10 +45,4 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-Cooking Companion - Made by: 
-
-Caitlynn “Kai” Sengchiam
-Andrew Nguyen
-Justin Nguyen
-Nathan Hoang
-Halle Vu 
+Cooking Companion - Made by: Caitlynn “Kai” Sengchiam, Andrew Nguyen, Justin Nguyen, Nathan Hoang, Halle Vu 
