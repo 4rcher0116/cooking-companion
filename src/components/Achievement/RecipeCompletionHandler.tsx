@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { RecipeDTO } from '../../constants/RecipeDTO';
+import { processCompletedRecipe } from '../Achievement/AchievementsUtils';
 
 
 type RecipeCompletionHandlerProps = {
@@ -15,7 +16,7 @@ const RecipeCompletionHandler: React.FC<RecipeCompletionHandlerProps> = ({ recip
     // This could involve updating user history, backend API calls, etc.
 
     // Process achievements
-    processCompletedRecipeRecipe(recipe);
+    processCompletedRecipe(recipe);
 
     // Optionally, notify the user
     alert('Recipe marked as completed! Check your achievements.');
@@ -40,7 +41,3 @@ const RecipeCompletionHandler: React.FC<RecipeCompletionHandlerProps> = ({ recip
 };
 
 export default RecipeCompletionHandler;
-function processCompletedRecipeRecipe(recipe: RecipeDTO) {
-    throw new Error('Function not implemented.');
-}
-
