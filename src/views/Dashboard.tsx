@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./styles/_Dashboard.module.css";
-import { Button, Menu, MenuItem, IconButton, Modal } from "@mui/material";
+import { Button, Menu, MenuItem, IconButton, Modal, useMediaQuery } from "@mui/material";
 import LeaderboardScreen from "../components/DashboardModules/LeaderboardScreen";
 import RecipeDashboard from "../components/DashboardModules/RecipeDashboard";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -95,6 +95,60 @@ const Dashboard = () => {
     hype: characterImage,
   };
 
+  const isXs = useMediaQuery('(max-width:600px)');
+  const isSm = useMediaQuery('(min-width:600px) and (max-width:960px)');
+  const isMd = useMediaQuery('(min-width:960px) and (max-width:1280px)');
+  const isLg = useMediaQuery('(min-width:1280px) and (max-width:1920px)');
+  const isXl = useMediaQuery('(min-width:1920px)');
+
+  const viewportWidth = useMemo(() => {
+    if (isXs) return 'xs';
+    if (isSm) return 'sm';
+    if (isMd) return 'md';
+    if (isLg) return 'lg';
+    if (isXl) return 'xl';
+    return 'unknown';
+  }, [isXs, isSm, isMd, isLg, isXl]);
+
+   // Memoize the button style based on the viewport width
+   const closeButtonStyle = useMemo(() => {
+    let transformValue = 'translate(0, -100%)'; // Default transform
+
+    switch (viewportWidth) {
+      case 'xs':
+        transformValue = 'translate(15%, -100%)'; // Adjust for extra small screens
+        break;
+      case 'sm':
+        transformValue = 'translate(10%, -100%)'; // Adjust for small screens
+        break;
+      case 'md':
+        transformValue = 'translate(-100%, -100%)'; // Adjust for medium screens
+        break;
+      case 'lg':
+        transformValue = 'translate(-260%, -100%)'; // Adjust for large screens
+        break;
+      case 'xl':
+        transformValue = 'translate(-380%, -100%)'; // Adjust for extra-large screens
+        break;
+      default:
+        transformValue = 'translate(0, -100%)';
+    }
+
+    return {
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      zIndex: 1000000,
+      transform: transformValue,
+      fontSize: '28px',
+      backgroundColor: 'transparent',
+      color: '#555',
+      cursor: 'pointer',
+      transition: 'transform 0.2s ease, color 0.2s ease',
+    };
+  }, [viewportWidth]);
+
+
   return (
     <div className={styles.dashboardContent}>
       <div className={styles.headerContent}>
@@ -135,7 +189,7 @@ const Dashboard = () => {
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <div className={styles.modalContent}>
           <div className={styles.contentContainer}>
-            <Button className={styles.closeButton} onClick={handleClose}>
+            <Button sx={closeButtonStyle} onClick={handleClose}>
               <span className={styles.buttonText}>Close</span>
             </Button>
             <LeaderboardScreen />
