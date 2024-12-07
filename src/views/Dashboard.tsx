@@ -30,6 +30,14 @@ const Dashboard = () => {
     handleMenuClose();
   };
 
+  const handleSignOut = () => {
+    // Clear auth data (example: token stored in localStorage)
+    localStorage.removeItem('authToken');
+    // Redirect to login page
+    window.location.href = '/';
+  };
+
+
   React.useEffect(() => {
     let idleTimeoutShort: NodeJS.Timeout | null = null;
     let idleTimeoutLong: NodeJS.Timeout | null = null;
@@ -91,6 +99,9 @@ const Dashboard = () => {
           </MenuItem>
           <MenuItem onClick={() => handleNavigate("/bookmark")}>
             Bookmarks
+          </MenuItem>
+          <MenuItem onClick={() => handleSignOut()}>
+            Sign Out
           </MenuItem>
         </Menu>
       </div>
