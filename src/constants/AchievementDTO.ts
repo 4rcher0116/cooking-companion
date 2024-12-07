@@ -5,6 +5,7 @@ export type AchievementDTO = {
     name: string;
     description: string;
     metric: (recipe: RecipeDTO) => boolean; // Function to determine if a recipe fulfills the metric
-    progress: number; // Progress percentage (0-100)
+    progress: number; // amount of target completed
+    target: number; // amount required to complete achievment
     category: string;
   };

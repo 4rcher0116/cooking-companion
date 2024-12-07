@@ -15,6 +15,7 @@ export const achievementsList: AchievementDTO[] = [
       return totalSteps >= 5;
     },
     progress: 0,
+    target: 1,
     category: "Steps",
   },
   {
@@ -26,6 +27,7 @@ export const achievementsList: AchievementDTO[] = [
       return totalSteps >= 10;
     },
     progress: 0,
+    target: 10,
     category: "Steps",
   },
 
@@ -36,6 +38,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete a recipe that takes under 15 minutes.",
     metric: (recipe: RecipeDTO) => recipe.readyInMinutes < 15,
     progress: 0,
+    target: 1,
     category: "Cook Time",
   },
   {
@@ -44,6 +47,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete a recipe that takes over 2 hours.",
     metric: (recipe: RecipeDTO) => recipe.readyInMinutes > 120,
     progress: 0,
+    target: 1,
     category: "Cook Time",
   },
   {
@@ -52,6 +56,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete 5 recipes with preparation and cooking time between 30-60 minutes.",
     metric: (recipe: RecipeDTO) => recipe.readyInMinutes >= 30 && recipe.readyInMinutes <= 60,
     progress: 0,
+    target: 5,
     category: "Cook Time",
   },
 
@@ -62,6 +67,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete 5 vegan recipes.",
     metric: (recipe: RecipeDTO) => recipe.vegan,
     progress: 0,
+    target: 5,
     category: "Dietary",
   },
   {
@@ -70,6 +76,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete 5 gluten-free recipes.",
     metric: (recipe: RecipeDTO) => recipe.glutenFree,
     progress: 0,
+    target: 5,
     category: "Dietary",
   },
   {
@@ -78,6 +85,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Complete 5 dairy-free recipes.",
     metric: (recipe: RecipeDTO) => recipe.dairyFree,
     progress: 0,
+    target: 5,
     category: "Dietary",
   },
 
@@ -88,6 +96,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Cook 5 recipes for 1 serving.",
     metric: (recipe: RecipeDTO) => recipe.servings === 1,
     progress: 0,
+    target: 5,
     category: "Serving Size",
   },
   {
@@ -96,6 +105,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Cook 5 recipes for 4 or more servings.",
     metric: (recipe: RecipeDTO) => recipe.servings >= 4,
     progress: 0,
+    target: 5,
     category: "Serving Size",
   },
   {
@@ -104,6 +114,7 @@ export const achievementsList: AchievementDTO[] = [
     description: "Cook 3 recipes for 8 or more servings.",
     metric: (recipe: RecipeDTO) => recipe.servings >= 8,
     progress: 0,
+    target: 3,
     category: "Serving Size",
   },
   {
@@ -120,6 +131,7 @@ export const achievementsList: AchievementDTO[] = [
       );
     },
     progress: 0,
+    target: 4,
     category: "Serving Size",
   },
 
@@ -139,6 +151,7 @@ export const achievementsList: AchievementDTO[] = [
       return uniqueIngredients.size < 5;
     },
     progress: 0,
+    target: 1,
     category: "Ingredients",
   },
   {
@@ -150,30 +163,12 @@ export const achievementsList: AchievementDTO[] = [
       return false; // Placeholder; actual logic will be implemented in the processing algorithm
     },
     progress: 0,
+    target: 10,
     category: "Ingredients",
   },
-
-  // Popularity Achievements
-  {
-    id: 15,
-    name: "Popular Cook",
-    description: "Complete a recipe with over 100 likes.",
-    metric: (recipe: RecipeDTO) => recipe.aggregateLikes > 100,
-    progress: 0,
-    category: "Popularity",
-  },
-  {
-    id: 16,
-    name: "Top Chef",
-    description: "Complete 10 very popular recipes.",
-    metric: (recipe: RecipeDTO) => recipe.veryPopular,
-    progress: 0,
-    category: "Popularity",
-  },
-
   // Diverse Cuisine Achievements
   {
-    id: 17,
+    id: 15,
     name: "World Explorer",
     description: "Complete recipes from at least 5 different cuisines.",
     metric: (recipe: RecipeDTO) => {
@@ -181,10 +176,11 @@ export const achievementsList: AchievementDTO[] = [
       return false; // Placeholder; actual logic will be handled in the processing algorithm
     },
     progress: 0,
+    target: 5,
     category: "Cuisine",
   },
   {
-    id: 18,
+    id: 16,
     name: "Culinary Connoisseur",
     description: "Complete 15 recipes from 10 different cuisines.",
     metric: (recipe: RecipeDTO) => {
@@ -192,6 +188,7 @@ export const achievementsList: AchievementDTO[] = [
       return false;
     },
     progress: 0,
+    target: 15,
     category: "Cuisine",
   },
 ];

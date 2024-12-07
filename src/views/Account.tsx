@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from "./styles/_Account.module.css";
 import { useNavigate } from 'react-router-dom';
-import CircularProgressWithLabel from "../components/common/CircularWithValueLabel";
 import { AchievementDTO } from '../constants/AchievementDTO';
 import { achievementsList } from '../constants/AchievementsList';
 import { getAchievementProgress, setAchievementProgress } from '../utils/localStorageUtils';
+import AchievementCounter from '../components/common/AchievementCounter/AchievementCounter';
 
 const Account = () => {
   const navigate = useNavigate();
@@ -71,7 +71,10 @@ const Account = () => {
                   </span>
                 </div>
                 <div className={styles.progressContainer}>
-                  <CircularProgressWithLabel value={achievement.progress} />
+                  <AchievementCounter 
+                    currentCount={achievement.progress} 
+                    target={achievement.target} 
+                  />
                 </div>
               </li>
             ))}
