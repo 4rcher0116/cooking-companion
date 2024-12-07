@@ -8,7 +8,7 @@ import './Leaderboard.css'; // Optional CSS for styling
 interface User {
   id: number;
   name: string;
-  achievements: number[]; // List of achievement IDs the user has completed
+  achievements: number; // List of achievement IDs the user has completed
 }
 
 const userScore = calculateAchievementScore();
@@ -17,25 +17,27 @@ console.log(`User's total achievement score: ${userScore}`);
 const Leaderboard = () => {
   const [userScore, setUserScore] = useState<number>(0); // State for storing the current user's score
   const [users, setUsers] = useState<User[]>([]); // State for storing other users in the leaderboard
+  const [user, setUser] = useState<User>(); 
 
   // Example user data, replace with actual API or state management
-  const currentUser = { id: 1, name: 'John Doe', achievements: [1, 3, 5] };
-
   // UseEffect hook to calculate the user's score when the component is loaded
   useEffect(() => {
     // Calculate the user's score
-    const score = calculateAchievementScore(currentUser.achievements);
-    setUserScore(score); // Set the user's score in the state
+    const currentUser: User = {
+      id: 1, name: 'John Doe', achievements: 1
+    }
+    setUser(currentUser)
+
 
     // Fetch the leaderboard data (can be from API or mock data)
     const mockUsers: User[] = [
-      { id: 1, name: 'John Doe', achievements: [1, 3, 5] },
-      { id: 2, name: 'Jane Smith', achievements: [2, 4, 5] },
-      { id: 3, name: 'Alex Johnson', achievements: [6, 7, 8] },
+      { id: 1, name: 'John Doe', achievements: 1 },
+      { id: 2, name: 'Jane Smith', achievements: 2 },
+      { id: 3, name: 'Alex Johnson', achievements: 3 },
     ];
 
     setUsers(mockUsers); // Set users in the leaderboard (replace with actual API call)
-  }, [currentUser]);
+  }, []);
 
   // Function to calculate achievement score based on the achievements the user has completed
   const calculateAchievementScore = (completedAchievements: number[]): number => {
@@ -54,7 +56,7 @@ const Leaderboard = () => {
     <div className="leaderboard">
       <h1>Leaderboard</h1>
       <div className="current-user">
-        <h2>{currentUser.name}'s Score</h2>
+        <h2>{user?.name}'s Score</h2>
         <h2>Your Achievement Score: {userScore}%</h2>
       </div>
 
@@ -62,7 +64,7 @@ const Leaderboard = () => {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            {user.name}: {calculateAchievementScore(user.achievements)}%
+            {user.name}: {user.achievements}%
           </li>
         ))}
       </ul>
