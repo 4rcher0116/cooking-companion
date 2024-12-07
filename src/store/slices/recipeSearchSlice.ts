@@ -2,6 +2,8 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
+  calorieMap,
+  cookTimeMap,
   EMPTY_FILTER_VALUES,
   FilterValues,
 } from "../../constants/FilterValues";
@@ -39,10 +41,13 @@ export const fetchRecipes = createAsyncThunk(
         queryParams.append("type", filters.mealType);
       }
       if (filters.maxCookTime && filters.maxCookTime.toString().length > 0) {
-        queryParams.append("maxReadyTime", filters.maxCookTime.toString());
+        queryParams.append("maxReadyTime", JSON.stringify(cookTimeMap[filters.maxCookTime]));
       }
       if (filters.calories && filters.calories.toString().length > 0) {
-        queryParams.append("maxCalories", filters.calories.toString());
+        queryParams.append(
+          "maxCalories",
+          JSON.stringify(calorieMap[filters.calories])
+        );
       }
 
       // Unmodifiable query params

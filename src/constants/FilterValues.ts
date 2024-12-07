@@ -44,7 +44,21 @@ export const calorieOptions = [
   "Moderate (under 400 calories)",
   "Standard (under 600 calories)",
   "Hearty (under 800 calories)",
-  "High (over 800 calories)",
 ];
+
+export const calorieMap: { [key: string]: number } = {
+  "Low (under 200 calories)": 200,
+  "Moderate (under 400 calories)": 400,
+  "Standard (under 600 calories)": 600,
+  "Hearty (under 800 calories)": 800,
+};
+
+export const cookTimeMap: { [key: string]: number } = {
+    "Quick (under 15 minutes)": 15,
+    "Short (15-30 minutes)": 30,
+    "Moderate (30-60 minutes)": 60,
+    "Long (60-90 minutes)": 90,
+    "Unlimited/No Limit": Infinity, // Use Infinity to represent no limit
+  };
 
 export const skillLevelOptions = ["Beginner", "Intermediate", "Advanced"];

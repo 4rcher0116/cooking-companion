@@ -31,10 +31,11 @@ const RecipeDashboard = () => {
   );
   const recipes = useSelector((state: RootState) => state.recipeSearch.recipes);
 
-  const filteredRecipes = useMemo(() => {
+  const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+
+  useEffect(() => {
     let returnRecipes = recipes;
 
-    // Post-network call processing for servingSize and skillLevel filters
     if (filterValues.servingSize) {
       returnRecipes = returnRecipes.filter(
         (recipe) => recipe.servings >= filterValues.servingSize
@@ -57,7 +58,10 @@ const RecipeDashboard = () => {
       });
     }
 
-    return recipes.slice(0, 30);
+    console.log("Filter Values", filterValues);
+    console.log("Recipes after filtering", returnRecipes);
+
+    setFilteredRecipes(returnRecipes.slice(0, 30));
   }, [recipes, filterValues]);
 
   return (
