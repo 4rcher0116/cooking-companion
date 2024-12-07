@@ -1,3 +1,5 @@
+// src/App.js
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './views/Dashboard';
 import Login from './views/Login';
