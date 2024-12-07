@@ -52,7 +52,8 @@ export const fetchRecipes = createAsyncThunk(
       queryParams.append("ignorePantry", "true");
       queryParams.append("sort", "max-used-ingredients");
       queryParams.append("offset", "0");
-      queryParams.append("number", "100");
+      //todo change to 50 later
+      queryParams.append("number", "1");
 
       const response = await fetch(
         `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?${queryParams.toString()}`,

@@ -1,4 +1,4 @@
-import { TextField, Slider, Autocomplete, Grid } from "@mui/material";
+import { TextField, Slider, Autocomplete, Grid, CircularProgress, Typography, Box, Button } from "@mui/material";
 import styles from "./styles/_RecipeDashboard.module.css";
 import { RecipeDTO } from "../../constants/RecipeDTO";
 import { sampleRecipes } from "../../constants/SampleRecipes";
@@ -11,7 +11,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchRecipes, setFilters } from "../../store/slices/recipeSearchSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useImageLoader from "../../hooks/useImageLoader";
+import htmr from "htmr";
 
 const RecipeDashboard = () => {
   const recipes = useSelector((state: RootState) => state.recipeSearch.recipes);
@@ -22,8 +24,6 @@ const RecipeDashboard = () => {
     ...sampleRecipes,
     ...sampleRecipes,
   ];
-
-
 
   return (
     <div className={styles.dashboardContainer}>
@@ -196,24 +196,78 @@ const FilterMenu = () => {
 
 type RecipeCardProps = {
   recipe: RecipeDTO;
+  imageUrl: string;
 };
 
 type RecipeCardListProps = {
   recipes: RecipeDTO[];
 };
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
-// RecipeCard Component: Renders a single recipe
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+  useEffect(() => {
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => setImageLoaded(true);
+  }, [imageUrl]);
+
+  const totalSteps = recipe.analyzedInstructions.reduce((acc, instruction) => acc + instruction.steps.length, 0);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <div className={styles.recipeCard}>
-      <img
-        src={recipe.image}
-        alt={recipe.title}
-        className={styles.recipeImage}
-      />
+      <div className={styles.imageContainer}>
+        {!imageLoaded && (
+          <div className={styles.imagePlaceholder}>
+            <CircularProgress />
+          </div>
+        )}
+        <img
+          src={imageUrl}
+          alt={recipe.title}
+          className={styles.recipeImage}
+          style={{ display: imageLoaded ? 'block' : 'none' }}
+        />
+      </div>
       <div className={styles.recipeDetails}>
-        <h3 className={styles.recipeTitle}>{recipe.title}</h3>
-        <p className={styles.recipeSummary}>{recipe.nutrition.summary}</p>
+        <Typography variant="body1" fontWeight={100} className={styles.recipeTitle}>
+          {recipe.title}
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography variant="body2">
+            <strong>Servings:</strong> {recipe.servings}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Cook Time:</strong> {recipe.readyInMinutes} minutes
+          </Typography>
+          <Typography variant="body2">
+            <strong>Steps:</strong> {totalSteps}
+          </Typography>
+          <Box sx={{ maxHeight: expanded ? 'none' : '8em', overflow: 'hidden', position: 'relative' }}>
+            <Typography variant="body2">
+              <strong>Description:</strong> {htmr(recipe.nutrition.summary)}
+            </Typography>
+            {!expanded && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '1.5em',
+                  background: 'linear-gradient(to bottom, transparent, white)',
+                }}
+              />
+            )}
+          </Box>
+          <Button onClick={handleExpandClick} sx={{ alignSelf: 'flex-start' }}>
+            {expanded ? 'Show Less' : 'Show More'}
+          </Button>
+        </Box>
       </div>
       <div className={styles.actions}>
         <button className={styles.bookmarkButton} aria-label="Bookmark recipe">
@@ -227,12 +281,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   );
 };
 
-// RecipeCardList Component: Renders a vertical list of RecipeCards
 const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
+  const imageUrls = recipes.map((recipe) => recipe.image);
+  const loadedImages = useImageLoader(imageUrls, 1500); 
+
   return (
     <div className={styles.recipeCardList}>
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
+      {recipes.map((recipe, index) => (
+        <RecipeCard key={recipe.id} recipe={recipe} imageUrl={loadedImages[index] || ''} />
       ))}
     </div>
   );
