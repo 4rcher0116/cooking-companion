@@ -100,7 +100,7 @@ const Dashboard = () => {
     hype: characterImage,
   };
 
-  const isXs = useMediaQuery('(max-width:600px)');
+  const isXs = useMediaQuery('(max-width:600px)'); // Modify this for phone version
   const isSm = useMediaQuery('(min-width:600px) and (max-width:960px)');
   const isMd = useMediaQuery('(min-width:960px) and (max-width:1280px)');
   const isLg = useMediaQuery('(min-width:1280px) and (max-width:1920px)');
@@ -130,7 +130,7 @@ const Dashboard = () => {
         transformValue = 'translate(-100%, -100%)'; // Adjust for medium screens
         break;
       case 'lg':
-        transformValue = 'translate(-260%, -100%)'; // Adjust for large screens
+        transformValue = 'translate(15%, -100%)'; // Adjust for large screens
         break;
       case 'xl':
         transformValue = 'translate(-380%, -100%)'; // Adjust for extra-large screens
