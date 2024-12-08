@@ -1,32 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import SignIn from "../components/LoginModules/Signin";
 import styles from "./styles/_Login.module.css";
 import TypewriterComponent from "typewriter-effect";
 import wavingCharacter from "../assets/Character/waving_mascot.png";
 
 const Login = () => {
+  const [showCursor, setShowCursor] = useState(true); // State to control the cursor visibility
+
   return (
     <div className={styles.mainBackground}>
       <div className={styles.backgroundOverlay}></div>
       <div className={styles.allContentContainer}>
         <div className={styles.leftContainer}>
-          <TypewriterComponent
-            options={{
-              autoStart: true,
-              loop: false,
-              delay: 75,
-              cursorClassName: styles.cursorStyle,
-            }}
-            onInit={(typewriter) => {
-              typewriter
-                .typeString(
-                  `<span class="${styles.animatedText}">Cooking Companion</span>`
-                )
-                .pauseFor(500)
-                .start();
-            }}
-          />
-
+          <h1 className={styles.title}>Cooking Companion</h1> {/* Static title */}
           <div className={styles.mascotContainer}>
             <img
               className={styles.mascotImage}
@@ -39,15 +25,15 @@ const Login = () => {
                   autoStart: true,
                   loop: false,
                   delay: 75,
-                  cursorClassName: styles.speechBubbleCursor,
+                  cursorClassName: showCursor ? styles.speechBubbleCursor : styles.cursorHidden, // Conditionally apply cursor class
                 }}
                 onInit={(typewriter) => {
                   typewriter
-                  .pauseFor(1500)
                     .typeString(
                       `<span class="${styles.speechBubbleTypography}">Welcome Chef! Log in to begin your cooking adventure!</span>`
                     )
                     .pauseFor(500)
+                    .callFunction(() => setShowCursor(false)) // Hide the cursor after typing
                     .start();
                 }}
               />

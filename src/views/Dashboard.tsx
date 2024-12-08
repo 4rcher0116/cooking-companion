@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -35,6 +35,11 @@ const Dashboard = () => {
   const handleNavigate = (path: string) => {
     navigate(path);
     handleMenuClose();
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '/';
   };
 
   // Fetch updated leaderboard data
@@ -156,9 +161,18 @@ const Dashboard = () => {
         <IconButton className={styles.iconButtonStyles} onClick={handleMenuOpen}>
           <PermIdentityIcon />
         </IconButton>
-        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
-          <MenuItem onClick={() => handleNavigate("/userAccount")}>Achievements</MenuItem>
-          <MenuItem onClick={() => handleNavigate("/bookmark")}>Bookmarks</MenuItem>
+        <Menu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => handleNavigate("/userAccount")}>
+            Achievements
+          </MenuItem>
+          <MenuItem onClick={() => handleNavigate("/bookmark")}>
+            Bookmarks
+          </MenuItem>
+          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
       </div>
 
@@ -168,7 +182,7 @@ const Dashboard = () => {
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
-            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} />
+            <AnimatedCharacter sourceImage={emotion === "knife" ? characterKnife : emotion === "cry" ? characterCry : characterImage} message={message} />
           </div>
           <div className={styles.buttonContainer}>
             <div className={styles.leaderboardPreview} onClick={handleOpen}>
