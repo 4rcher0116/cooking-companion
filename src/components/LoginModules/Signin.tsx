@@ -45,31 +45,48 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   // Check streak when the page loads or the user logs in
-  const checkStreak = () => {
+  // const checkStreak = () => {
+  //   const lastLoginDate = localStorage.getItem('lastLoginDate');
+  //   const currentDate = new Date().toLocaleDateString();
+  //   let newStreakMessage = '';
+
+  //   if (lastLoginDate === currentDate) {
+  //     // User has logged in today
+  //     const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
+  //     newStreakMessage = `You're continuing your streak of ${currentStreak} day${currentStreak > 1 ? 's' : ''}!`;
+  //   } else {
+  //     // First login of the day
+  //     localStorage.setItem('lastLoginDate', currentDate);
+  //     const newStreak = parseInt(localStorage.getItem('streakCount') || '0') + 1;
+  //     localStorage.setItem('streakCount', newStreak.toString());
+  //     newStreakMessage = `Great job! You've started a streak of ${newStreak} day${newStreak > 1 ? 's' : ''}!`;
+  //   }
+
+  //   setStreakMessage(newStreakMessage);
+  //   setOpenSnackbar(true);
+  // };
+
+  const handleSignIn = () => {
     const lastLoginDate = localStorage.getItem('lastLoginDate');
     const currentDate = new Date().toLocaleDateString();
-    let newStreakMessage = '';
-
+    let streakMessage = '';
+  
     if (lastLoginDate === currentDate) {
       // User has logged in today
       const currentStreak = parseInt(localStorage.getItem('streakCount') || '0');
-      newStreakMessage = `You're continuing your streak of ${currentStreak} day${currentStreak > 1 ? 's' : ''}!`;
+      streakMessage = `You're continuing your streak of ${currentStreak} day${currentStreak > 1 ? 's' : ''}!`;
     } else {
       // First login of the day
       localStorage.setItem('lastLoginDate', currentDate);
       const newStreak = parseInt(localStorage.getItem('streakCount') || '0') + 1;
       localStorage.setItem('streakCount', newStreak.toString());
-      newStreakMessage = `Great job! You've started a streak of ${newStreak} day${newStreak > 1 ? 's' : ''}!`;
+      streakMessage = `Great job! You've started a streak of ${newStreak} day${newStreak > 1 ? 's' : ''}!`;
     }
-
-    setStreakMessage(newStreakMessage);
-    setOpenSnackbar(true);
+  
+    // Navigate to the dashboard with the streak message
+    navigate('/dashboard', { state: { streakMessage } });
   };
-
-  const handleSignIn = () => {
-    checkStreak();
-    navigate('/dashboard');
-  };
+  
 
   return (
     <Box {...props}>

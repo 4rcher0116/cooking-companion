@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./styles/_Dashboard.module.css";
-import { Button, Menu, MenuItem, IconButton, Modal, useMediaQuery } from "@mui/material";
+import { Button, Menu, MenuItem, IconButton, Modal, useMediaQuery, Snackbar, Alert } from "@mui/material";
 import LeaderboardScreen from "../components/DashboardModules/LeaderboardScreen";
 import RecipeDashboard from "../components/DashboardModules/RecipeDashboard";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { calculateTotalScore } from "../utils/localStorageUtils";
 import AnimatedCharacter from "../components/common/AnimatedCharacter";
 import characterImage from "../assets/Character/redpandaNom.png";
@@ -23,6 +23,10 @@ const Dashboard = () => {
   const [emotion, setEmotion] = useState<"knife" | "cry" | "hype">("hype");
   const [message, setMessage] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [streakMessage, setStreakMessage] = useState("");
+
+  const location = useLocation();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,7 +58,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchLeaderboardData();
-  }, []);
+
+    // Check if there's a streak message passed from SignIn
+    if (location.state?.streakMessage) {
+      setStreakMessage(location.state.streakMessage);
+      setOpenSnackbar(true);
+    }
+  }, [location.state]);
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
 
   useEffect(() => {
     let idleTimeoutShort: NodeJS.Timeout | null = null;
@@ -184,6 +198,16 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
+          {streakMessage}
+        </Alert>
+      </Snackbar>
       </div>
 
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
