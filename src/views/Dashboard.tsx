@@ -10,6 +10,7 @@ import AnimatedCharacter from "../components/common/AnimatedCharacter";
 import characterImage from "../assets/Character/redpandaNom.png";
 import characterKnife from "../assets/Character/redpandaKnife.png";
 import characterCry from "../assets/Character/redpandaCry.png";
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 interface Player {
   id: number;
@@ -204,7 +205,7 @@ const Dashboard = () => {
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
+        <Alert icon={<WhatshotIcon></WhatshotIcon>}onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
           {streakMessage}
         </Alert>
       </Snackbar>

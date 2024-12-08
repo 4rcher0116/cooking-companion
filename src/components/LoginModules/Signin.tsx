@@ -15,6 +15,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { Snackbar, Alert } from '@mui/material';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -150,7 +151,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
       >
-        <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+        <Alert icon={<WhatshotIcon></WhatshotIcon>}onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
           {streakMessage}
         </Alert>
       </Snackbar>
