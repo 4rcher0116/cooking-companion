@@ -9,11 +9,13 @@ import LunchDiningIcon from "@mui/icons-material/LunchDiningOutlined";
 type AnimatedCharacterProps = {
   sourceImage: string | undefined;
   message: string;
+  messageClassName?: string; // Add the optional prop for dynamic styling
 };
 
 const AnimatedCharacter = ({
   sourceImage,
   message,
+  messageClassName, // Destructure messageClassName
 }: AnimatedCharacterProps) => {
   return (
     <div className={styles.mascotContainer}>
@@ -32,7 +34,7 @@ const AnimatedCharacter = ({
               typewriter
                 .pauseFor(1500)
                 .typeString(
-                  `<span class="${styles.speechBubbleTypography}">${message}</span>`
+                  `<span class="${styles.speechBubbleTypography} ${messageClassName || ""}">${message}</span>`
                 )
                 .pauseFor(500)
                 .start();
@@ -58,9 +60,7 @@ const IconBorder = ({ children }: IconBorderProps) => {
       <LocalPizzaIcon className={`${styles.cornerIcon} ${styles.topRight}`} />
 
       {/* Bottom-left corner */}
-      <LunchDiningIcon
-        className={`${styles.cornerIcon} ${styles.bottomLeft}`}
-      />
+      <LunchDiningIcon className={`${styles.cornerIcon} ${styles.bottomLeft}`} />
 
       {/* Bottom-right corner */}
       <IcecreamIcon className={`${styles.cornerIcon} ${styles.bottomRight}`} />

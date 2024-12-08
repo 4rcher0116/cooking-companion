@@ -156,26 +156,33 @@ const Dashboard = () => {
 
   return (
     <div className={styles.dashboardContent}>
-      <div className={styles.headerContent}>
-        <p className={styles.headerText}>Cooking Companion</p>
+      {/* Responsive Header */}
+      <div className={isXs ? styles.phoneHeader : styles.headerContent}>
+      <p className={isXs ? styles.headerTextPhone : styles.headerText}>
+        Cooking Companion
+      </p>
         <IconButton className={styles.iconButtonStyles} onClick={handleMenuOpen}>
           <PermIdentityIcon />
         </IconButton>
-        <Menu
-          anchorEl={menuAnchor}
-          open={Boolean(menuAnchor)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={() => handleNavigate("/userAccount")}>
-            Achievements
-          </MenuItem>
-          <MenuItem onClick={() => handleNavigate("/bookmark")}>
-            Bookmarks
-          </MenuItem>
+        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
+          <MenuItem onClick={() => handleNavigate("/userAccount")}>Achievements</MenuItem>
+          <MenuItem onClick={() => handleNavigate("/bookmark")}>Bookmarks</MenuItem>
           <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
       </div>
 
+      {/* Responsive Body */}
+      {isXs ? (
+        // Phone version layout
+        <div className={styles.phoneDashboardContainer}>
+          <div className={styles.phoneRecipeContainer}>
+            <RecipeDashboard />
+          </div>
+          <div className={styles.phoneCharacterContainer}>
+            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} messageClassName={isXs ? styles.phoneAnimatedCharacterMessage : ""}/>
+          </div>
+        </div>
+      ) : (
       <div className={styles.body}>
         <div className={styles.recipeDashboardContainer}>
           <RecipeDashboard />
@@ -199,7 +206,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      )}
 
+      {/* Leaderboard Modal */}
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <div className={styles.modalContent}>
           <div className={styles.contentContainer}>
