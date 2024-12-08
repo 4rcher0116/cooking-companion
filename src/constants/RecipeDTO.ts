@@ -10,8 +10,8 @@ export type RecipeDTO = {
   lowFodmap: boolean;
   weightWatcherSmartPoints: number;
   gaps: string;
-  preparationMinutes: number;
-  cookingMinutes: number;
+  preparationMinutes?: number | null;
+  cookingMinutes?: number | null;
   aggregateLikes: number;
   healthScore: number;
   creditsText: string;
@@ -19,7 +19,6 @@ export type RecipeDTO = {
   pricePerServing: number;
   id: number;
   title: string;
-  author: string;
   readyInMinutes: number;
   servings: number;
   sourceUrl: string;
@@ -57,4 +56,5 @@ export type RecipeDTO = {
   }[];
   spoonacularScore: number;
   spoonacularSourceUrl: string;
+  license?: string;
 };
