@@ -10,7 +10,8 @@ export const processCompletedRecipe = (completedRecipe: RecipeDTO): void => {
   achievementsList.forEach(achievement => {
     // If achievement requires complex processing, handle it
     if (isComplexAchievement(achievement)) {
-      handleComplexAchievement(achievement, completedRecipe);
+      // handleComplexAchievement(achievement, completedRecipe);
+      console.log("Complex achievement detected");
     } else if (achievement.metric(completedRecipe)) {
       // For simple achievements, just increment progress
       const currentProgress = getAchievementProgress(achievement.id);
