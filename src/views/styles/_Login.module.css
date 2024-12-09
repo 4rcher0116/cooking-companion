@@ -1,11 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700&display=swap');
+
+.title {
+  font-size: 4rem; /* Large font size */
+  font-weight: 700; /* Bold font */
+  color: #c0392b; /* A darker red shade */
+  text-align: center;
+  letter-spacing: 0.1rem; /* Slight spacing for a polished look */
+  font-family: 'Baloo Bhaijaan 2', cursive; /* Cute, bubbly font */
+  margin-bottom: 1.5rem; /* Add spacing below the title */
+  position: relative; /* Position relative to the mascot */
+  z-index: 2; /* Ensure the title is above other elements */
+}
+
+
+
 .mainBackground {
   position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden; /* Prevents overflow of blurred background */
+  align-items: flex-start; /* Align content to the top */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
 
 .backgroundOverlay {
@@ -19,122 +35,125 @@
   background-position: center;
   filter: blur(5px);
   z-index: 0;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.14); /* White haze with 14% opacity */
-  }
 }
 
 .allContentContainer {
   position: relative;
-  z-index: 1; /* Higher z-index to appear above the blurred background */
-  width: 100%;
-  height: 80%;
-  padding: 0 5vw;
-  margin: 5vh 5vw;
+  z-index: 1;
+  width: 90%; /* Leave some margin for smaller screens */
+  max-width: 1200px; /* Restrict maximum width */
+  height: auto;
+  margin: 5vh auto;
   border-radius: 40px;
   background-color: rgba(255, 255, 255, 0.8);
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Default: side-by-side layout */
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* Align items at the top */
+  padding: 2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  overflow: hidden; /* To ensure rounded corners are visible */
+  overflow: hidden;
+}
 
+/* Left Container (Mascot + Speech Bubble + Title) */
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align mascot towards the bottom */
+  align-items: stretch; /* Stretch to match available width */
+  width: 50%; /* Take half the width on larger screens */
+  padding-right: 1rem; /* Add spacing between the mascot and the sign-in container */
+  position: relative;
+  height: 100%; /* Stretch to match the container height */
+}
+
+@media (min-width: 1440px) {
   .leftContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-
-    justify-content: space-between;
-
-    padding-top: 3vw;
+    margin-left: 2rem; /* Shift to the right for large screens */
   }
 }
 
+/* Animated Title */
 .animatedText {
-  color: darkred;
-  font-size: 7vh;
-  font-weight: bold;
+  font-size: 3.5rem; /* Larger font size */
+  font-weight: 700; /* Bold for emphasis */
+  color: #d32f2f; /* A vibrant dark red color */
+  text-align: center;
+  margin-bottom: 1.5rem;
+  white-space: nowrap; /* Prevent text wrapping */
+  letter-spacing: 0.1rem; /* Add spacing between letters for style */
+  font-family: 'Baloo Bhaijaan 2', cursive; /* Playful and bubbly font */
 }
 
-.cursorStyle {
-  display: none;
-  background-color: black;
-  width: 2px; /* Adjust the thickness */
-  height: 7vh; /* Set height relative to font size */
-  margin-left: 4px; /* Optional: add space between text and cursor */
-  animation: blink 1.2s step-end;
 
-  transform: translateY(-70%);
-}
-
+/* Mascot Container */
 .mascotContainer {
   display: flex;
-  height: fit-content;
-  width: fit-content;
-
+  flex-direction: column;
+  align-items: center; /* Center-align the mascot */
+  justify-content: flex-start; /* Position the mascot at the top */
   position: relative;
+  flex: 1; /* Allow the mascot container to occupy part of the left column */
+  margin-bottom: 1rem; /* Add spacing below the mascot */
+}
 
-  .speechBubblePrompt {
-    position: absolute;
-    right: 0;
-    top: 0;
+/* Speech Bubble */
+.speechBubblePrompt {
+  flex: 2; /* Take the remaining space in the left column */
+  margin-top: 1rem;
+  width: 100%; /* Fill the container width */
+  padding: 1.5rem 2rem;
+  background-color: #f5f7dc;
+  border-radius: 20px;
+  box-shadow: 10px 10px #b5d99c;
+  text-align: center;
+  z-index: 3;
+  overflow-wrap: break-word; /* Ensure text wraps within the bubble */
+}
 
-    transform: translate(100%, -80%);
-    mix-blend-mode: multiply;
-    /* text-align: center; */
-    background-color: #f5f7dc;
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 25px 25px #b5d99c;
-    /* font-family: cursive; */
-    animation: float 5s ease-in-out infinite;
-  }
+/* Arrow for Speech Bubble */
+.speechBubblePrompt::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: #f5f7dc;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  z-index: 3;
+}
 
-  .speechBubblePrompt::after {
-    transform: translateY(0px);
-    content: ".";
-    font-weight: bold;
-    -webkit-text-fill-color: #f5f7dc;
-    text-shadow: 22px 22px #b5d99c;
-    text-align: left;
-    font-size: 55px;
-    border-radius: 20px;
-    width: 10rem;
-    height: 11px;
-    line-height: 30px;
-    background-color: #f5f7dc;
-    position: absolute;
-    display: block;
-    bottom: -40px;
-    left: 0;
-    box-shadow: 25px 25px #b5d99c;
-    z-index: -2;
-  }
+/* Mascot Image */
+.mascotImage {
+  width: 80%; /* Adjust size proportionally */
+  max-width: 250px; /* Restrict mascot size for balance */
+  height: auto;
+}
 
-  .speechBubbleTypography {
-    color: #774f38;
-    font-size: 2.5vh;
-  }
+/* Sign In Container */
+.signInContainer {
+  width: 50%; /* Take half the width on larger screens */
+  max-width: 500px; /* Restrict maximum width */
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
 
-  .speechBubbleCursor {
-    display: inline-block;
-    background-color: black;
-    width: 2px; /* Adjust the thickness */
-    height: 2.5rem; /* Set height relative to font size */
-    margin-left: 3px; /* Optional: add space between text and cursor */
-    animation: blink 1.2s step-end infinite;
+.cursorHidden {
+  display: none; /* Hide the cursor */
+}
 
-    transform: translateY(-50%);
-  }
+.speechBubbleCursor {
+  display: inline-block;
+  background-color: black;
+  width: 2px; /* Adjust the thickness */
+  height: 2.5rem; /* Set height relative to font size */
+  animation: blink 1.2s step-end infinite; /* Blinking effect */
+  transform: translateY(-50%);
 }
 
 @keyframes blink {
@@ -147,32 +166,97 @@
   }
 }
 
-/* Media Query Adjustments */
+/* Responsive Adjustments */
 
-/* For screens wider than 1440px (e.g., 2K resolution) */
+/* For screens wider than 1440px (e.g., large desktops) */
 @media (min-width: 1440px) {
-  .mascotContainer {
-    transform: scale(1.2); /* Increase size for larger screens */
+  .mascotImage {
+    max-width: 300px; /* Larger mascot */
+  }
+
+  .speechBubblePrompt {
+    padding: 2rem;
+  }
+
+  .animatedText {
+    font-size: 3rem; /* Larger title */
   }
 }
 
-/* For screens between 720px and 1080px (e.g., smaller laptops) */
-@media (max-width: 1080px) and (min-width: 720px) {
-  .mascotContainer {
-    transform: scale(0.9); /* Slightly decrease size */
+/* For screens between 720px and 1440px (e.g., tablets and small desktops) */
+@media (max-width: 1440px) {
+  .mascotImage {
+    max-width: 250px; /* Restrict mascot size */
+  }
+
+  .speechBubblePrompt {
+    padding: 1.5rem;
+  }
+
+  .animatedText {
+    font-size: 2.5rem;
   }
 }
 
-/* For screens between 480px and 720px (e.g., tablets in landscape mode) */
-@media (max-width: 720px) and (min-width: 480px) {
-  .mascotContainer {
-    transform: scale(0.8); /* Decrease size further */
+/* For screens smaller than 720px */
+@media (max-width: 720px) {
+  .allContentContainer {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align the content */
+  }
+
+  .leftContainer,
+  .signInContainer {
+    width: 100%; /* Full width for stacked layout */
+    padding: 0; /* Remove side padding */
+  }
+
+  .mascotImage {
+    max-width: 200px; /* Smaller mascot */
+  }
+
+  .speechBubblePrompt {
+    max-width: 500px;
+    font-size: 1.2rem; /* Adjust text size */
+    padding: 1.2rem;
+  }
+
+  .animatedText {
+    font-size: 2rem; /* Smaller title */
+  }
+
+  .signInContainer {
+    padding: 1.5rem;
   }
 }
 
 /* For screens smaller than 480px (e.g., mobile phones) */
 @media (max-width: 480px) {
-  .mascotContainer {
-    transform: scale(0.7); /* Reduce size for mobile screens */
+  .allContentContainer {
+    padding: 1rem;
+  }
+
+  .leftContainer,
+  .signInContainer {
+    width: 100%; /* Full width for mobile */
+    padding: 0; /* Remove side padding */
+  }
+
+  .mascotImage {
+    max-width: 150px; /* Small mascot */
+  }
+
+  .speechBubblePrompt {
+    max-width: 400px;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .animatedText {
+    font-size: 1.8rem; /* Smaller title */
+  }
+
+  .signInContainer {
+    padding: 1rem;
   }
 }

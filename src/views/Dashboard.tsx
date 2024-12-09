@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -40,6 +40,11 @@ const Dashboard = () => {
   const handleNavigate = (path: string) => {
     navigate(path);
     handleMenuClose();
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '/';
   };
 
   // Fetch updated leaderboard data
@@ -110,7 +115,7 @@ const Dashboard = () => {
     hype: characterImage,
   };
 
-  const isXs = useMediaQuery('(max-width:600px)');
+  const isXs = useMediaQuery('(max-width:600px)'); // Modify this for phone version
   const isSm = useMediaQuery('(min-width:600px) and (max-width:960px)');
   const isMd = useMediaQuery('(min-width:960px) and (max-width:1280px)');
   const isLg = useMediaQuery('(min-width:1280px) and (max-width:1920px)');
@@ -140,7 +145,7 @@ const Dashboard = () => {
         transformValue = 'translate(-100%, -100%)'; // Adjust for medium screens
         break;
       case 'lg':
-        transformValue = 'translate(-260%, -100%)'; // Adjust for large screens
+        transformValue = 'translate(15%, -100%)'; // Adjust for large screens
         break;
       case 'xl':
         transformValue = 'translate(-380%, -100%)'; // Adjust for extra-large screens
@@ -166,24 +171,40 @@ const Dashboard = () => {
 
   return (
     <div className={styles.dashboardContent}>
-      <div className={styles.headerContent}>
-        <p className={styles.headerText}>Cooking Companion</p>
+      {/* Responsive Header */}
+      <div className={isXs ? styles.phoneHeader : styles.headerContent}>
+      <p className={isXs ? styles.headerTextPhone : styles.headerText}>
+        Cooking Companion
+      </p>
         <IconButton className={styles.iconButtonStyles} onClick={handleMenuOpen}>
           <PermIdentityIcon />
         </IconButton>
         <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
           <MenuItem onClick={() => handleNavigate("/userAccount")}>Achievements</MenuItem>
           <MenuItem onClick={() => handleNavigate("/bookmark")}>Bookmarks</MenuItem>
+          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
       </div>
 
+      {/* Responsive Body */}
+      {isXs ? (
+        // Phone version layout
+        <div className={styles.phoneDashboardContainer}>
+          <div className={styles.phoneRecipeContainer}>
+            <RecipeDashboard />
+          </div>
+          <div className={styles.phoneCharacterContainer}>
+            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} messageClassName={isXs ? styles.phoneAnimatedCharacterMessage : ""}/>
+          </div>
+        </div>
+      ) : (
       <div className={styles.body}>
         <div className={styles.recipeDashboardContainer}>
           <RecipeDashboard />
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.animatedCharacterContainer}>
-            <AnimatedCharacter sourceImage={emotionImages[emotion]} message={message} />
+            <AnimatedCharacter sourceImage={emotion === "knife" ? characterKnife : emotion === "cry" ? characterCry : characterImage} message={message} />
           </div>
           <div className={styles.buttonContainer}>
             <div className={styles.leaderboardPreview} onClick={handleOpen}>
@@ -210,7 +231,9 @@ const Dashboard = () => {
         </Alert>
       </Snackbar>
       </div>
+      )}
 
+      {/* Leaderboard Modal */}
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <div className={styles.modalContent}>
           <div className={styles.contentContainer}>
