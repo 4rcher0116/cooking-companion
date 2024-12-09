@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import styles from "./styles/_RecipeDashboard.module.css";
 import { RecipeDTO } from "../../constants/RecipeDTO";
-import { sampleRecipes } from "../../constants/SampleRecipes";
 import {
   calorieOptions,
   cookTimeOptions,
@@ -24,6 +23,7 @@ import { useEffect, useMemo, useState } from "react";
 import useImageLoader from "../../hooks/useImageLoader";
 import htmr from "htmr";
 import useDebounce from "../../hooks/useDebounce";
+import { setCompletionStatus, setRecipe } from "../../store/slices/completionToolSlice";
 
 const RecipeDashboard = () => {
   const filterValues = useSelector(
@@ -237,12 +237,13 @@ const FilterMenu = () => {
 type RecipeCardProps = {
   recipe: RecipeDTO;
   imageUrl: string;
+  onRecipeSelect: (recipe: RecipeDTO) => void;
 };
 
 type RecipeCardListProps = {
   recipes: RecipeDTO[];
 };
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl, onRecipeSelect }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -328,7 +329,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl }) => {
             📌
           </span>
         </button>
-        <button className={styles.selectButton}>Select Recipe</button>
+        <button className={styles.selectButton} onClick={() => {onRecipeSelect(recipe)}}>Select Recipe</button>
       </div>
     </div>
   );
@@ -338,6 +339,12 @@ const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
   const imageUrls = useMemo(() => recipes.map((recipe) => recipe.image), [recipes]); // Memoize array
 
   const loadedImages = useImageLoader(imageUrls, 1500);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const onRecipeSelect = (recipe: RecipeDTO) => {
+    dispatch(setRecipe(recipe));
+    dispatch(setCompletionStatus("incomplete"));
+  };
 
   return (
     <div className={styles.recipeCardList}>
@@ -346,6 +353,7 @@ const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
           key={recipe.id}
           recipe={recipe}
           imageUrl={loadedImages[index] || ""}
+          onRecipeSelect={onRecipeSelect}
         />
       ))}
     </div>
