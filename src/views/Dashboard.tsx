@@ -206,6 +206,9 @@ const Dashboard = () => {
           <MenuItem onClick={() => handleNavigate("/bookmark")}>
             Bookmarks
           </MenuItem>
+          {isXs && (
+            <MenuItem onClick={() => setOpen(true)}>Leaderboard</MenuItem>
+          )}
         </Menu>
       </div>
 
