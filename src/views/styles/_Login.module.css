@@ -143,10 +143,6 @@
   text-align: center;
 }
 
-.cursorHidden {
-  display: none; /* Hide the cursor */
-}
-
 .speechBubbleCursor {
   display: inline-block;
   background-color: black;

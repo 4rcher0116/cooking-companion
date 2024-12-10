@@ -202,7 +202,7 @@
   
     .phoneCharacterContainer {
         background-color: #d4dad8;
-        padding: 0.5em;          /* Smaller padding for a compact design */
+        /* padding: 0.5em; */
         display: flex;
         justify-content: center;
         align-items: center;

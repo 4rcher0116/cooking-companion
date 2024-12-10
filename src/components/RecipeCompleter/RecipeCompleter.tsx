@@ -13,13 +13,18 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  useMediaQuery,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { RootState } from "../../store/store";
 import { setCompletionStatus, setRecipe } from "../../store/slices/completionToolSlice";
 import { processCompletedRecipe } from "../Achievement/AchievementsUtils";
 
-const RecipeCompleter: React.FC = () => {
+type RecipeCompleterProps = {
+    isSmallScreen?: boolean;
+};
+
+const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
   const dispatch = useDispatch();
   const recipe = useSelector((state: RootState) => state.completionTool.recipe);
   const [activeStep, setActiveStep] = useState(0);
@@ -120,7 +125,7 @@ const RecipeCompleter: React.FC = () => {
             <StepLabel
               StepIconProps={{
                 sx: {
-                  fontSize: "3rem", // Adjust the size of the stepper circles
+                  fontSize: isSmallScreen ? "2rem" :"3rem", // Adjust the size of the stepper circles
                   color: activeStep === index ? "#829189" : "#65726E", // Adjust the color of the stepper circles
                 },
               }}
@@ -144,14 +149,14 @@ const RecipeCompleter: React.FC = () => {
             mb: 1,
             color: "#835352",
             fontWeight: 800,
-            fontSize: "3rem",
+            fontSize: isSmallScreen ? "2rem" :"3rem",
           }}
         >{`Step ${activeStep + 1}`}</Typography>
         <Typography
           sx={{
             color: "#835352",
             fontWeight: 500,
-            fontSize: "2.1rem",
+            fontSize: isSmallScreen ? "1.2rem" :"2.1rem",
           }}
         >
           {steps[activeStep]?.step}
@@ -185,11 +190,11 @@ const RecipeCompleter: React.FC = () => {
           </Button>
         </Box>
       )}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, width: "100%" }}>
+      {!isSmallScreen && <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, width: "100%" }}>
         <Button variant="outlined" color="secondary" onClick={handleAbandonRecipe}>
           Abandon Recipe
         </Button>
-      </Box>
+      </Box>}
 
       <Dialog open={timerOpen} onClose={handleTimerClose}>
         <DialogTitle>Set Timer</DialogTitle>

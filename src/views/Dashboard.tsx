@@ -178,7 +178,9 @@ const Dashboard = () => {
   }, [viewportWidth]);
 
   // Access the recipe state from the completionToolSlice
-  const recipe = useSelector((state: RootState) => state.completionTool.recipe);
+  const $recipe = useSelector(
+    (state: RootState) => state.completionTool.recipe
+  );
 
   return (
     <div className={styles.dashboardContent}>
@@ -212,7 +214,7 @@ const Dashboard = () => {
         // Phone version layout
         <div className={styles.phoneDashboardContainer}>
           <div className={styles.phoneRecipeContainer}>
-            <RecipeDashboard />
+            {$recipe ? <RecipeCompleter isSmallScreen /> : <RecipeDashboard />}
           </div>
           <div className={styles.phoneCharacterContainer}>
             <AnimatedCharacter
@@ -227,7 +229,7 @@ const Dashboard = () => {
       ) : (
         <div className={styles.body}>
           <div className={styles.recipeDashboardContainer}>
-            {recipe ? <RecipeCompleter /> : <RecipeDashboard />}
+            {$recipe ? <RecipeCompleter /> : <RecipeDashboard />}
           </div>
           <div className={styles.rightContainer}>
             <div className={styles.animatedCharacterContainer}>

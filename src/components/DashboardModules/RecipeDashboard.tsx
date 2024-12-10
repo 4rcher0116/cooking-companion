@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   TextField,
   Slider,
@@ -7,7 +8,10 @@ import {
   Typography,
   Box,
   Button,
+  IconButton,
+  Modal,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import styles from "./styles/_RecipeDashboard.module.css";
 import { RecipeDTO } from "../../constants/RecipeDTO";
 import {
@@ -19,19 +23,24 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchRecipes, setFilters } from "../../store/slices/recipeSearchSlice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import useImageLoader from "../../hooks/useImageLoader";
 import htmr from "htmr";
 import useDebounce from "../../hooks/useDebounce";
-import { setCompletionStatus, setRecipe } from "../../store/slices/completionToolSlice";
+import {
+  setCompletionStatus,
+  setRecipe,
+} from "../../store/slices/completionToolSlice";
+import { useMediaQuery } from "@mui/material";
 
 const RecipeDashboard = () => {
   const filterValues = useSelector(
     (state: RootState) => state.recipeSearch.filters
   );
   const recipes = useSelector((state: RootState) => state.recipeSearch.recipes);
-
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+  const [modalOpen, setModalOpen] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     let returnRecipes = recipes;
@@ -64,14 +73,29 @@ const RecipeDashboard = () => {
     setFilteredRecipes(returnRecipes.slice(0, 30));
   }, [recipes, filterValues]);
 
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.filterMenuContainerInDashboard}>
-        <FilterMenu />
+        {isSmallScreen ? (
+          <IconButton className={styles.searchIcon} onClick={handleModalOpen}>
+            <SearchIcon />
+          </IconButton>
+        ) : (
+          <FilterMenu />
+        )}
       </div>
       <div className={styles.recipeListContainer}>
         <RecipeCardList recipes={filteredRecipes} />
       </div>
+      <Modal open={modalOpen} onClose={handleModalClose}>
+        <Box className={styles.modalContent}>
+          <FilterMenu />
+          <Button onClick={handleModalClose}>Close</Button>
+        </Box>
+      </Modal>
     </div>
   );
 };
@@ -93,7 +117,7 @@ const FilterMenu = () => {
     <div className={styles.filterMenuContainer}>
       <Grid container spacing={2}>
         {/* Row 1 */}
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <Autocomplete
             options={mealTypeOptions}
             value={filters.mealType}
@@ -112,7 +136,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <Autocomplete
             options={cookTimeOptions}
             value={filters.maxCookTime}
@@ -131,7 +155,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <Autocomplete
             options={skillLevelOptions}
             value={filters.skillLevel}
@@ -151,7 +175,7 @@ const FilterMenu = () => {
           />
         </Grid>
         {/* Row 2 */}
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <Autocomplete
             options={calorieOptions}
             value={filters.calories}
@@ -170,7 +194,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <div className={styles.filterItem}>
             <label>Serving Size</label>
             <div
@@ -208,7 +232,7 @@ const FilterMenu = () => {
             </div>
           </div>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <TextField
             label="Name Search"
             variant="outlined"
@@ -243,9 +267,14 @@ type RecipeCardProps = {
 type RecipeCardListProps = {
   recipes: RecipeDTO[];
 };
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl, onRecipeSelect }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({
+  recipe,
+  imageUrl,
+  onRecipeSelect,
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const img = new Image();
@@ -297,7 +326,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl, onRecipeSelec
           </Typography>
           <Box
             sx={{
-              maxHeight: expanded ? "none" : "8em",
+              maxHeight: expanded ? "none" : isSmallScreen ? "2em" : "8em",
               overflow: "hidden",
               position: "relative",
             }}
@@ -324,19 +353,34 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, imageUrl, onRecipeSelec
         </Box>
       </div>
       <div className={styles.actions}>
-        <button className={styles.bookmarkButton} aria-label="Bookmark recipe">
-          <span role="img" aria-hidden="true">
-            📌
-          </span>
+        {!isSmallScreen && (
+          <button
+            className={styles.bookmarkButton}
+            aria-label="Bookmark recipe"
+          >
+            <span role="img" aria-hidden="true">
+              📌
+            </span>
+          </button>
+        )}
+        <button
+          className={styles.selectButton}
+          onClick={() => {
+            onRecipeSelect(recipe);
+          }}
+        >
+          Select Recipe
         </button>
-        <button className={styles.selectButton} onClick={() => {onRecipeSelect(recipe)}}>Select Recipe</button>
       </div>
     </div>
   );
 };
 
 const RecipeCardList: React.FC<RecipeCardListProps> = ({ recipes }) => {
-  const imageUrls = useMemo(() => recipes.map((recipe) => recipe.image), [recipes]); // Memoize array
+  const imageUrls = useMemo(
+    () => recipes.map((recipe) => recipe.image),
+    [recipes]
+  ); // Memoize array
 
   const loadedImages = useImageLoader(imageUrls, 1500);
   const dispatch = useDispatch<AppDispatch>();

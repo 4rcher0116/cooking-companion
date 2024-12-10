@@ -28,7 +28,6 @@ const AnimatedCharacter = ({
               autoStart: true,
               loop: false,
               delay: 75,
-              cursorClassName: styles.speechBubbleCursor,
             }}
             onInit={(typewriter) => {
               typewriter

@@ -5,8 +5,6 @@ import TypewriterComponent from "typewriter-effect";
 import wavingCharacter from "../assets/Character/waving_mascot.png";
 
 const Login = () => {
-  const [showCursor, setShowCursor] = useState(true); // State to control the cursor visibility
-
   return (
     <div className={styles.mainBackground}>
       <div className={styles.backgroundOverlay}></div>
@@ -25,7 +23,7 @@ const Login = () => {
                   autoStart: true,
                   loop: false,
                   delay: 75,
-                  cursorClassName: showCursor ? styles.speechBubbleCursor : styles.cursorHidden, // Conditionally apply cursor class
+                  // cursorClassName: showCursor ? styles.speechBubbleCursor : styles.cursorHidden, // Conditionally apply cursor class
                 }}
                 onInit={(typewriter) => {
                   typewriter
@@ -33,7 +31,6 @@ const Login = () => {
                       `<span class="${styles.speechBubbleTypography}">Welcome Chef! Log in to begin your cooking adventure!</span>`
                     )
                     .pauseFor(500)
-                    .callFunction(() => setShowCursor(false)) // Hide the cursor after typing
                     .start();
                 }}
               />
