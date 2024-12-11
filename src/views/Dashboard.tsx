@@ -19,6 +19,8 @@ import AnimatedCharacter from "../components/common/AnimatedCharacter";
 import characterImage from "../assets/Character/redpandaNom.png";
 import characterKnife from "../assets/Character/redpandaKnife.png";
 import characterCry from "../assets/Character/redpandaCry.png";
+import characterDrool from "../assets/Character/redpandaDrool.png";
+import characterHype from "../assets/Character/redpandaHype.png";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
@@ -33,7 +35,9 @@ interface Player {
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [emotion, setEmotion] = useState<"knife" | "cry" | "hype">("hype");
+  const [emotion, setEmotion] = useState<"knife" | "cry" | "hype" | "drool" | "complete">(
+    "hype"
+  );
   const [message, setMessage] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -83,45 +87,12 @@ const Dashboard = () => {
     setOpenSnackbar(false);
   };
 
-  useEffect(() => {
-    let idleTimeoutShort: NodeJS.Timeout | null = null;
-    let idleTimeoutLong: NodeJS.Timeout | null = null;
-
-    const resetIdleTimer = () => {
-      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
-      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
-      setEmotion("hype");
-      setMessage("Cooking is your superpower! What’s next on the menu?");
-
-      idleTimeoutShort = setTimeout(() => {
-        setEmotion("cry");
-        setMessage("Oh no, don’t go! The recipe isn’t done yet!");
-      }, 10000);
-
-      idleTimeoutLong = setTimeout(() => {
-        setEmotion("knife");
-        setMessage(
-          "I might have to use this... on some ingredients, of course!"
-        );
-      }, 20000);
-    };
-
-    window.addEventListener("keydown", resetIdleTimer);
-    window.addEventListener("click", resetIdleTimer);
-    resetIdleTimer();
-
-    return () => {
-      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
-      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
-      window.removeEventListener("keydown", resetIdleTimer);
-      window.removeEventListener("click", resetIdleTimer);
-    };
-  }, []);
-
   const emotionImages = {
-    knife: characterKnife,
-    cry: characterCry,
-    hype: characterImage,
+    "knife": characterKnife,
+    "cry": characterCry,
+    "hype": characterImage,
+    "drool": characterDrool,
+    "complete": characterHype,
   };
 
   const isXs = useMediaQuery("(max-width:600px)"); // Modify this for phone version
@@ -177,10 +148,62 @@ const Dashboard = () => {
     };
   }, [viewportWidth]);
 
-  // Access the recipe state from the completionToolSlice
-  const $recipe = useSelector(
-    (state: RootState) => state.completionTool.recipe
+  // Access the recipe state and completion status from the completionToolSlice
+  const recipe = useSelector((state: RootState) => state.completionTool.recipe);
+  const completionStatus = useSelector(
+    (state: RootState) => state.completionTool.completionStatus
   );
+
+  useEffect(() => {
+    let idleTimeoutShort: NodeJS.Timeout | null = null;
+    let idleTimeoutLong: NodeJS.Timeout | null = null;
+    let displayTimeout: NodeJS.Timeout | null = null;
+
+    const resetIdleTimer = () => {
+      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
+      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
+      setEmotion("hype");
+      setMessage("Cooking is your superpower! What’s next on the menu?");
+
+      idleTimeoutShort = setTimeout(() => {
+        setEmotion("cry");
+        setMessage("Oh no, don’t go! The recipe isn’t done yet!");
+      }, 10000);
+
+      idleTimeoutLong = setTimeout(() => {
+        setEmotion("knife");
+        setMessage(
+          "I might have to use this... on some ingredients, of course!"
+        );
+      }, 20000);
+    };
+
+    const handleIdleState = () => {
+      resetIdleTimer();
+      window.addEventListener("keydown", resetIdleTimer);
+      window.addEventListener("click", resetIdleTimer);
+    };
+
+    if (recipe) {
+      setEmotion("drool");
+      setMessage("Yum! Let's get cooking!");
+      displayTimeout = setTimeout(handleIdleState, 7000);
+    } else if (completionStatus === "complete") {
+      setEmotion("complete");
+      setMessage("Great job! You've completed the recipe!");
+      displayTimeout = setTimeout(handleIdleState, 7000);
+    } else {
+      handleIdleState();
+    }
+
+    return () => {
+      if (idleTimeoutShort) clearTimeout(idleTimeoutShort);
+      if (idleTimeoutLong) clearTimeout(idleTimeoutLong);
+      if (displayTimeout) clearTimeout(displayTimeout);
+      window.removeEventListener("keydown", resetIdleTimer);
+      window.removeEventListener("click", resetIdleTimer);
+    };
+  }, [recipe, completionStatus]);
 
   return (
     <div className={styles.dashboardContent}>
@@ -217,7 +240,7 @@ const Dashboard = () => {
         // Phone version layout
         <div className={styles.phoneDashboardContainer}>
           <div className={styles.phoneRecipeContainer}>
-            {$recipe ? <RecipeCompleter isSmallScreen /> : <RecipeDashboard />}
+            {recipe ? <RecipeCompleter isSmallScreen /> : <RecipeDashboard />}
           </div>
           <div className={styles.phoneCharacterContainer}>
             <AnimatedCharacter
@@ -232,18 +255,12 @@ const Dashboard = () => {
       ) : (
         <div className={styles.body}>
           <div className={styles.recipeDashboardContainer}>
-            {$recipe ? <RecipeCompleter /> : <RecipeDashboard />}
+            {recipe ? <RecipeCompleter /> : <RecipeDashboard />}
           </div>
           <div className={styles.rightContainer}>
             <div className={styles.animatedCharacterContainer}>
               <AnimatedCharacter
-                sourceImage={
-                  emotion === "knife"
-                    ? characterKnife
-                    : emotion === "cry"
-                    ? characterCry
-                    : characterImage
-                }
+                sourceImage={emotionImages[emotion]}
                 message={message}
               />
             </div>
