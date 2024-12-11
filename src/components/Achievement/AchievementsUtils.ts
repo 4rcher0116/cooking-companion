@@ -1,13 +1,26 @@
+import { AchievementDTO } from "../../constants/AchievementDTO";
 import { achievementsList } from "../../constants/AchievementsList";
 import { RecipeDTO } from "../../constants/RecipeDTO";
-import { getAchievementProgress, setAchievementProgress } from "../../utils/localStorageUtils";
+import {
+  getAchievementProgress,
+  setAchievementProgress,
+} from "../../utils/localStorageUtils";
 
 /**
  * Processes a completed recipe and updates achievements accordingly.
  * @param completedRecipe - The recipe that has been completed by the user.
  */
-export const processCompletedRecipe = (completedRecipe: RecipeDTO): void => {
-  achievementsList.forEach(achievement => {
+/**
+ * Processes a completed recipe and updates achievements accordingly.
+ * @param completedRecipe - The recipe that has been completed by the user.
+ * @returns The list of achievements that were progressed.
+ */
+export const processCompletedRecipe = (
+  completedRecipe: RecipeDTO
+): AchievementDTO[] => {
+  const progressedAchievements: AchievementDTO[] = [];
+
+  achievementsList.forEach((achievement) => {
     // If achievement requires complex processing, handle it
     if (isComplexAchievement(achievement)) {
       // handleComplexAchievement(achievement, completedRecipe);
@@ -15,15 +28,19 @@ export const processCompletedRecipe = (completedRecipe: RecipeDTO): void => {
     } else if (achievement.metric(completedRecipe)) {
       // For simple achievements, just increment progress
       const currentProgress = getAchievementProgress(achievement.id);
-      const newProgress = Math.min(currentProgress + 10, 100); // Increment by 10%
-      setAchievementProgress(achievement.id, newProgress);
+      if (currentProgress < achievement.target) {
+        setAchievementProgress(achievement.id, currentProgress + 1);
 
-      // Notify user if achievement is completed
-      if (newProgress === 100) {
-        alert(`Congratulations! You've completed the achievement: ${achievement.name}`);
+        // Add to progressed achievements list
+        progressedAchievements.push({
+          ...achievement,
+          progress: currentProgress + 1,
+        });
       }
     }
   });
+
+  return progressedAchievements;
 };
 
 export const calculateAchievementScore = (): number => {
@@ -31,7 +48,7 @@ export const calculateAchievementScore = (): number => {
   let achievementCount = 0;
 
   // Loop through all achievements
-  achievementsList.forEach(achievement => {
+  achievementsList.forEach((achievement) => {
     const progress = getAchievementProgress(achievement.id);
     totalProgress += progress;
     achievementCount += 1;
@@ -48,7 +65,11 @@ export const calculateAchievementScore = (): number => {
  * @returns Boolean indicating if it's a complex achievement.
  */
 const isComplexAchievement = (achievement: any): boolean => {
-  return achievement.name === "Ingredient Guru" || achievement.name === "World Explorer" || achievement.name === "Culinary Connoisseur";
+  return (
+    achievement.name === "Ingredient Guru" ||
+    achievement.name === "World Explorer" ||
+    achievement.name === "Culinary Connoisseur"
+  );
 };
 
 /**
@@ -56,7 +77,10 @@ const isComplexAchievement = (achievement: any): boolean => {
  * @param achievement - The complex achievement to handle.
  * @param recipe - The recipe that has been completed.
  */
-const handleComplexAchievement = (achievement: any, recipe: RecipeDTO): void => {
+const handleComplexAchievement = (
+  achievement: any,
+  recipe: RecipeDTO
+): void => {
   const key = `complex_${achievement.id}`;
   const data = localStorage.getItem(key);
   let currentData = data ? JSON.parse(data) : {};
@@ -84,11 +108,15 @@ const handleComplexAchievement = (achievement: any, recipe: RecipeDTO): void => 
 };
 
 // **Complex Achievement Handlers**
-const updateIngredientGuru = (currentData: any, recipe: RecipeDTO, achievement: any) => {
+const updateIngredientGuru = (
+  currentData: any,
+  recipe: RecipeDTO,
+  achievement: any
+) => {
   if (!currentData.ingredients) currentData.ingredients = new Set<string>();
-  recipe.analyzedInstructions.forEach(instr => {
-    instr.steps.forEach(step => {
-      step.ingredients.forEach(ing => currentData.ingredients.add(ing.name));
+  recipe.analyzedInstructions.forEach((instr) => {
+    instr.steps.forEach((step) => {
+      step.ingredients.forEach((ing) => currentData.ingredients.add(ing.name));
     });
   });
   currentData.count = currentData.ingredients.size;
@@ -96,36 +124,59 @@ const updateIngredientGuru = (currentData: any, recipe: RecipeDTO, achievement: 
   if (currentData.count >= 10 && !currentData.completed) {
     currentData.completed = true;
     setAchievementProgress(achievement.id, 100);
-    alert(`Congratulations! You've completed the achievement: ${achievement.name}`);
+    alert(
+      `Congratulations! You've completed the achievement: ${achievement.name}`
+    );
   } else {
-    setAchievementProgress(achievement.id, Math.min((currentData.count / 10) * 100, 100));
+    setAchievementProgress(
+      achievement.id,
+      Math.min((currentData.count / 10) * 100, 100)
+    );
   }
 };
 
-const updateWorldExplorer = (currentData: any, recipe: RecipeDTO, achievement: any) => {
+const updateWorldExplorer = (
+  currentData: any,
+  recipe: RecipeDTO,
+  achievement: any
+) => {
   if (!currentData.cuisines) currentData.cuisines = new Set<string>();
-  recipe.cuisines.forEach(cuisine => currentData.cuisines.add(cuisine));
+  recipe.cuisines.forEach((cuisine) => currentData.cuisines.add(cuisine));
   currentData.count = currentData.cuisines.size;
 
   if (currentData.count >= 5 && !currentData.completed) {
     currentData.completed = true;
     setAchievementProgress(achievement.id, 100);
-    alert(`Congratulations! You've completed the achievement: ${achievement.name}`);
+    alert(
+      `Congratulations! You've completed the achievement: ${achievement.name}`
+    );
   } else {
-    setAchievementProgress(achievement.id, Math.min((currentData.count / 5) * 100, 100));
+    setAchievementProgress(
+      achievement.id,
+      Math.min((currentData.count / 5) * 100, 100)
+    );
   }
 };
 
-const updateCulinaryConnoisseur = (currentData: any, recipe: RecipeDTO, achievement: any) => {
+const updateCulinaryConnoisseur = (
+  currentData: any,
+  recipe: RecipeDTO,
+  achievement: any
+) => {
   if (!currentData.cuisines) currentData.cuisines = new Set<string>();
-  recipe.cuisines.forEach(cuisine => currentData.cuisines.add(cuisine));
+  recipe.cuisines.forEach((cuisine) => currentData.cuisines.add(cuisine));
   currentData.count = currentData.cuisines.size;
 
   if (currentData.count >= 10 && !currentData.completed) {
     currentData.completed = true;
     setAchievementProgress(achievement.id, 100);
-    alert(`Congratulations! You've completed the achievement: ${achievement.name}`);
+    alert(
+      `Congratulations! You've completed the achievement: ${achievement.name}`
+    );
   } else {
-    setAchievementProgress(achievement.id, Math.min((currentData.count / 10) * 100, 100));
+    setAchievementProgress(
+      achievement.id,
+      Math.min((currentData.count / 10) * 100, 100)
+    );
   }
 };

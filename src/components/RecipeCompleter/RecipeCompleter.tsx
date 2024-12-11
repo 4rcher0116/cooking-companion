@@ -13,12 +13,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  LinearProgress,
   useMediaQuery,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { RootState } from "../../store/store";
-import { setCompletionStatus, setRecipe } from "../../store/slices/completionToolSlice";
+import {
+  setCompletionStatus,
+  setRecipe,
+} from "../../store/slices/completionToolSlice";
 import { processCompletedRecipe } from "../Achievement/AchievementsUtils";
+import { AchievementDTO } from "../../constants/AchievementDTO";
 
 type RecipeCompleterProps = {
   isSmallScreen?: boolean;
@@ -32,6 +37,9 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
   const [timerValue, setTimerValue] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [progressedAchievements, setProgressedAchievements] = useState<
+    AchievementDTO[]
+  >([]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -54,15 +62,18 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
   const steps = recipe.analyzedInstructions[0]?.steps || [];
 
   const scanForAchievements = () => {
-    processCompletedRecipe(recipe);
+    const achievements = processCompletedRecipe(recipe);
+    setProgressedAchievements(achievements);
   };
 
   const handleNext = () => {
-    if (activeStep < steps.length - 1) {
+    if (activeStep < steps.length) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      if (activeStep === steps.length - 1) {
+        dispatch(setCompletionStatus("complete"));
+        scanForAchievements();
+      }
     } else {
-      dispatch(setCompletionStatus("complete"));
-      scanForAchievements();
       dispatch(setRecipe(null));
     }
   };
@@ -132,41 +143,114 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
             />
           </Step>
         ))}
+        <Step>
+          <StepLabel
+            StepIconProps={{
+              sx: {
+                fontSize: isSmallScreen ? "2rem" : "3rem", // Adjust the size of the stepper circles
+                color: activeStep === steps.length ? "#829189" : "#65726E", // Adjust the color of the stepper circles
+              },
+            }}
+          />
+        </Step>
       </Stepper>
-      <Box
-        sx={{
-          mt: 2,
-          mb: 2,
-          p: 2,
-          backgroundColor: "#fff",
-          borderRadius: 2,
-          boxShadow: 1,
-          width: "100%",
-          flexGrow: 1, // Allow this box to grow and fill the available space
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Typography
+      {activeStep < steps.length ? (
+        <Box
           sx={{
-            mb: 1,
-            color: "#835352",
-            fontWeight: 800,
-            fontSize: isSmallScreen ? "2rem" : "3rem",
-          }}
-        >{`Step ${activeStep + 1}`}</Typography>
-        <Typography
-          sx={{
-            color: "#835352",
-            fontWeight: 500,
-            fontSize: isSmallScreen ? "1.2rem" : "2.1rem",
-            flexGrow: 1, // Allow this typography to grow and fill the available space
+            mt: 2,
+            mb: 2,
+            p: 2,
+            backgroundColor: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            width: "100%",
+            flexGrow: 1, // Allow this box to grow and fill the available space
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {steps[activeStep]?.step}
-        </Typography>
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2, alignItems: "center", width: "100%" }}>
+          <Typography
+            sx={{
+              mb: 1,
+              color: "#835352",
+              fontWeight: 800,
+              fontSize: isSmallScreen ? "2rem" : "3rem",
+            }}
+          >{`Step ${activeStep + 1}`}</Typography>
+          <Typography
+            sx={{
+              color: "#835352",
+              fontWeight: 500,
+              fontSize: isSmallScreen ? "1.2rem" : "2.1rem",
+              flexGrow: 1, // Allow this typography to grow and fill the available space
+            }}
+          >
+            {steps[activeStep]?.step}
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            mt: 2,
+            mb: 2,
+            p: 2,
+            backgroundColor: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            width: "100%",
+            flexGrow: 1, // Allow this box to grow and fill the available space
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography
+            sx={{
+              mb: 1,
+              color: "#835352",
+              fontWeight: 800,
+              fontSize: isSmallScreen ? "2rem" : "3rem",
+            }}
+          >
+            Achievements Progressed
+          </Typography>
+          {progressedAchievements.map((achievement) => (
+            <Box key={achievement.id} sx={{ mb: 2 }}>
+              <Typography
+                sx={{
+                  color: "#835352",
+                  fontWeight: 500,
+                  fontSize: isSmallScreen ? "1.2rem" : "1.5rem",
+                }}
+              >
+                {achievement.name}
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#835352",
+                  fontWeight: 400,
+                  fontSize: isSmallScreen ? "1rem" : "1.2rem",
+                }}
+              >
+                {achievement.description}
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(achievement.progress / achievement.target) * 100}
+                sx={{ height: 10, borderRadius: 5, mt: 1 }}
+              />
+            </Box>
+          ))}
+        </Box>
+      )}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          pt: 2,
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
         <Button
           color="inherit"
           disabled={activeStep === 0}
@@ -180,7 +264,7 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
           <AccessTimeIcon />
         </IconButton>
         <Button variant="contained" onClick={handleNext}>
-          {activeStep === steps.length - 1 ? "Finish" : "Next"}
+          {activeStep === steps.length ? "Finish" : "Next"}
         </Button>
       </Box>
       {timeLeft > 0 && (
@@ -195,8 +279,19 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
         </Box>
       )}
       {!isSmallScreen && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, width: "100%" }}>
-          <Button variant="outlined" color="secondary" onClick={handleAbandonRecipe}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            mt: 2,
+            width: "100%",
+          }}
+        >
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleAbandonRecipe}
+          >
             Abandon Recipe
           </Button>
         </Box>
