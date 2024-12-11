@@ -21,10 +21,10 @@ import { setCompletionStatus, setRecipe } from "../../store/slices/completionToo
 import { processCompletedRecipe } from "../Achievement/AchievementsUtils";
 
 type RecipeCompleterProps = {
-    isSmallScreen?: boolean;
+  isSmallScreen?: boolean;
 };
 
-const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
+const RecipeCompleter: React.FC<RecipeCompleterProps> = ({ isSmallScreen }) => {
   const dispatch = useDispatch();
   const recipe = useSelector((state: RootState) => state.completionTool.recipe);
   const [activeStep, setActiveStep] = useState(0);
@@ -125,7 +125,7 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
             <StepLabel
               StepIconProps={{
                 sx: {
-                  fontSize: isSmallScreen ? "2rem" :"3rem", // Adjust the size of the stepper circles
+                  fontSize: isSmallScreen ? "2rem" : "3rem", // Adjust the size of the stepper circles
                   color: activeStep === index ? "#829189" : "#65726E", // Adjust the color of the stepper circles
                 },
               }}
@@ -142,6 +142,9 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
           borderRadius: 2,
           boxShadow: 1,
           width: "100%",
+          flexGrow: 1, // Allow this box to grow and fill the available space
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Typography
@@ -149,14 +152,15 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
             mb: 1,
             color: "#835352",
             fontWeight: 800,
-            fontSize: isSmallScreen ? "2rem" :"3rem",
+            fontSize: isSmallScreen ? "2rem" : "3rem",
           }}
         >{`Step ${activeStep + 1}`}</Typography>
         <Typography
           sx={{
             color: "#835352",
             fontWeight: 500,
-            fontSize: isSmallScreen ? "1.2rem" :"2.1rem",
+            fontSize: isSmallScreen ? "1.2rem" : "2.1rem",
+            flexGrow: 1, // Allow this typography to grow and fill the available space
           }}
         >
           {steps[activeStep]?.step}
@@ -190,11 +194,13 @@ const RecipeCompleter: React.FC<RecipeCompleterProps> = ({isSmallScreen}) => {
           </Button>
         </Box>
       )}
-      {!isSmallScreen && <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, width: "100%" }}>
-        <Button variant="outlined" color="secondary" onClick={handleAbandonRecipe}>
-          Abandon Recipe
-        </Button>
-      </Box>}
+      {!isSmallScreen && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, width: "100%" }}>
+          <Button variant="outlined" color="secondary" onClick={handleAbandonRecipe}>
+            Abandon Recipe
+          </Button>
+        </Box>
+      )}
 
       <Dialog open={timerOpen} onClose={handleTimerClose}>
         <DialogTitle>Set Timer</DialogTitle>
