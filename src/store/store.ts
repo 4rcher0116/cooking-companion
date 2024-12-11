@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import recipeSearchReducer from './slices/recipeSearchSlice';
+import completionToolReducer from './slices/completionToolSlice';
 
 const store = configureStore({
   reducer: {
     recipeSearch: recipeSearchReducer,
+    completionTool: completionToolReducer,
   },
 });
 

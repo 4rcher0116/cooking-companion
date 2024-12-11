@@ -1,56 +1,43 @@
 .dashboardContent {
-    background-color: #D4DAD8;
+    /* background-color: #D4DAD8; */
     height: 100vh;
     width: 100vw;
-
     overflow: hidden;
 }
 
 .headerContent {
-    /* border-bottom: 5px solid black; */
-    display:flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
     background-color: #829189;
-
-   
+    padding: 1em 2em;
 
     .headerText {
         font-size: 5vh;
         font-weight: bold;
-
-        padding: 0;
-        margin: 0;
-
         color: white;
+        margin: 0;
     }
-
-    padding: 1em;
-    padding-right: 2em;
 }
 
 .body {
     width: 100%;
     height: calc(100% - 100px);
-    
     display: flex;
     flex-direction: row;
 
     .recipeDashboardContainer {
         height: 100%;
         width: 60%;
-
         border-right: 5px solid darkgray;
     }
 
     .rightContainer {
         height: 100%;
         width: 40%;
-
         display: flex;
-        flex-direction: column;        
+        flex-direction: column;
     }
 
     .animatedCharacterContainer {
@@ -61,7 +48,7 @@
         border-bottom: 5px solid darkgray;
     }
 
-    .buttonContainer{
+    .buttonContainer {
         height: 50%;
         display: flex;
         justify-content: center;
@@ -69,18 +56,25 @@
     }
 }
 
-.modalContent{
+.modalContent {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
     width: 100vw;
-    
+    background-color: rgba(0, 0, 0, 0.5); /* Add a translucent background */
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     .contentContainer {
-        position:relative;
-        height: 75vh;
-        width: 75vw;
+        position: relative;
+        background-color: white;
+        height: fit-content;
+        width: fit-content;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -97,10 +91,20 @@
     color: white;
 }
 
-.iconButtonStyles{
+.closeButton:hover,
+.closeButton:focus {
+    background-color: #e0534f; /* Slightly darker red on hover/focus */
+    transform: scale(1.05); /* Add subtle scaling effect */
+    outline: none; /* Remove default outline */
+}
+
+.closeButton:focus-visible {
+    outline: 3px solid #ffbdb7; /* Accessible focus outline */
+}
+
+.iconButtonStyles {
     height: fit-content;
     width: fit-content;
-
     border-radius: 50% !important;
     border: 2px solid black !important;
     padding: 3px !important;
@@ -114,38 +118,119 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    text-align: center; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-      
-      .leaderboardPreviewTitle {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .leaderboardPreviewTitle {
         font-size: 1.2em;
         font-weight: bold;
         margin-bottom: 10px;
-      }
-      
-      .leaderboardPreviewList {
+    }
+
+    .leaderboardPreviewList {
         list-style: none;
         padding: 0;
         margin: 0;
-      }
-      
-      .leaderboardPreviewItem {
+    }
+
+    .leaderboardPreviewItem {
         font-size: 1em;
         margin: 5px 0;
-      }
-      
-      .leaderboardPreviewFooter {
+    }
+
+    .leaderboardPreviewFooter {
         font-size: 0.9em;
         font-style: italic;
         color: #888;
         margin-top: 10px;
-      }
-  }
+    }
+}
 
 .leaderboardPreview:hover {
     transform: scale(1.02);
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
+
+/* Phone-specific styles */
+@media (max-width: 600px) {
+    .headerContent {
+        padding: 0.5em 1em; /* Reduce padding for smaller screens */
+        height: 50px; /* Adjust height for smaller screens */
+    }
+    
+    .headerText {
+    font-size: 2.5vh; /* Make the font size smaller for the title */
+    }
+
+    .iconButtonStyles {
+        height: 30px;
+        width: 30px;
+        padding: 1px !important;
+      }
+
+    .phoneHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #829189;
+      padding: 0em 1em;
+    }
+  
+    .headerTextPhone {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+  
+    .phoneDashboardContainer {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 60px); /* Account for the header height */
+    }
+  
+    .phoneRecipeContainer {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1em;
+      background-color: #f4f4f4;
+      border-top: 2px solid #ccc;
+      border-bottom: 2px solid #ccc;
+    }
+  
+    .phoneCharacterContainer {
+        background-color: #d4dad8;
+        /* padding: 0.5em; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 2px solid #ccc;
+        height: 225px;           /* Fixed height for the container */
+        overflow: hidden;        /* Prevents overflow if content exceeds the height */
+      }
+
+    .animatedCharacterContainer {
+        height: 80px;          /* Adjust height for smaller screens */
+        padding: 0.3em;        /* Reduce padding for compact design */
+      }
+
+      .animatedCharacterMessage {
+        font-size: 1rem;
+        text-align: center;
+        margin: 0.5em;
+      }
+      
+      /* Phone-specific style for animatedCharacterMessage */
+      .phoneAnimatedCharacterMessage {
+        font-size: 0.7rem;        /* Smaller font size for phones */
+        max-width: 100%;          /* Ensure it fits within the container */
+        word-wrap: break-word;    /* Break long words */
+        line-height: 1.2;         /* Tighter line spacing */
+        padding: 0.3em;           /* Minimal padding */
+        text-align: center;       /* Center the text */
+      }
+
+  }
+  
