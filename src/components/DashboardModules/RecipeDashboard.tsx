@@ -104,6 +104,7 @@ const FilterMenu = () => {
   const dispatch = useDispatch<AppDispatch>();
   const filters = useSelector((state: RootState) => state.recipeSearch.filters);
   const debouncedFilters = useDebounce(filters, 1200);
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const handleFilterChange = (name: string, value: any) => {
     dispatch(setFilters({ ...filters, [name]: value }));
@@ -117,7 +118,7 @@ const FilterMenu = () => {
     <div className={styles.filterMenuContainer}>
       <Grid container spacing={2}>
         {/* Row 1 */}
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <Autocomplete
             options={mealTypeOptions}
             value={filters.mealType}
@@ -136,7 +137,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <Autocomplete
             options={cookTimeOptions}
             value={filters.maxCookTime}
@@ -155,7 +156,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <Autocomplete
             options={skillLevelOptions}
             value={filters.skillLevel}
@@ -175,7 +176,7 @@ const FilterMenu = () => {
           />
         </Grid>
         {/* Row 2 */}
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <Autocomplete
             options={calorieOptions}
             value={filters.calories}
@@ -194,7 +195,7 @@ const FilterMenu = () => {
             className={styles.filterItem}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <div className={styles.filterItem}>
             <label>Serving Size</label>
             <div
@@ -232,7 +233,7 @@ const FilterMenu = () => {
             </div>
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={4}>
           <TextField
             label="Name Search"
             variant="outlined"
